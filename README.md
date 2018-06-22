@@ -39,4 +39,4 @@ For the above types, the following operations are supported (_x_ is the type in 
 
 ## Slice Generator
 
-Slices also provides a generator that adds 
+WIP
