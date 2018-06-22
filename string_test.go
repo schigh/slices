@@ -208,6 +208,43 @@ func TestStringSlice_Reverse(t *testing.T) {
 	}
 }
 
+func TestStringSlice_Filter(t *testing.T) {
+	tests := []struct {
+		name string
+		slice []string
+		expected []string
+		filterFunc func(string) bool
+	}{
+		{
+			name: "starts with f",
+			slice: []string{"foo", "bar", "baz", "fizz", "buzz"},
+			expected: []string{"foo", "fizz"},
+			filterFunc: func(s string) bool { return len(s) > 0 && s[0] == 'f' },
+		},
+		{
+			name: "contains x",
+			slice: []string{"max", "foo", "xray", "homer", "boxy", "blue"},
+			expected: []string{"max", "xray", "boxy"},
+			filterFunc: func(s string) bool {
+				for i := 0; i < len(s); i++ {
+					if s[i] == 'x' {
+						return true
+					}
+				}
+				return false
+			},
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := StringSlice(test.slice).Filter(test.filterFunc).Value()
+			if !reflect.DeepEqual(test.expected, result) {
+				t.Errorf("expected %v, got %v", test.expected, result)
+			}
+		})
+	}
+}
+
 //endregion
 
 //region BENCHMARKS

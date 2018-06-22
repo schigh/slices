@@ -207,6 +207,36 @@ func TestUInt8Slice_Reverse(t *testing.T) {
 	}
 }
 
+func TestUInt8Slice_Filter(t *testing.T) {
+	tests := []struct {
+		name string
+		slice []uint8
+		expected []uint8
+		filterFunc func(uint8) bool
+	}{
+		{
+			name: "gt 10",
+			slice: []uint8{1, 2, 5, 11, 13, 15},
+			expected: []uint8{11, 13, 15},
+			filterFunc: func(n uint8) bool { return n > 10 },
+		},
+		{
+			name: "mod 3",
+			slice: []uint8{1, 2, 6, 11, 12, 15, 17},
+			expected: []uint8{6, 12, 15},
+			filterFunc: func(n uint8) bool { return n%3 == 0 },
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := UInt8Slice(test.slice).Filter(test.filterFunc).Value()
+			if !reflect.DeepEqual(test.expected, result) {
+				t.Errorf("expected %v, got %v", test.expected, result)
+			}
+		})
+	}
+}
+
 //endregion
 
 //region BENCHMARKS

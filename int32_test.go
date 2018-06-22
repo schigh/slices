@@ -207,6 +207,36 @@ func TestInt32Slice_Reverse(t *testing.T) {
 	}
 }
 
+func TestInt32Slice_Filter(t *testing.T) {
+	tests := []struct {
+		name string
+		slice []int32
+		expected []int32
+		filterFunc func(int32) bool
+	}{
+		{
+			name: "gt 10",
+			slice: []int32{1, 2, 5, 11, 13, 15},
+			expected: []int32{11, 13, 15},
+			filterFunc: func(n int32) bool { return n > 10 },
+		},
+		{
+			name: "mod 3",
+			slice: []int32{1, 2, 6, 11, 12, 15, 17},
+			expected: []int32{6, 12, 15},
+			filterFunc: func(n int32) bool { return n%3 == 0 },
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := Int32Slice(test.slice).Filter(test.filterFunc).Value()
+			if !reflect.DeepEqual(test.expected, result) {
+				t.Errorf("expected %v, got %v", test.expected, result)
+			}
+		})
+	}
+}
+
 //endregion
 
 //region BENCHMARKS

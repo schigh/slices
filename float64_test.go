@@ -204,3 +204,33 @@ func TestFloat64Slice_Reverse(t *testing.T) {
 		})
 	}
 }
+
+func TestFloat64Slice_Filter(t *testing.T) {
+	tests := []struct {
+		name string
+		slice []float64
+		expected []float64
+		filterFunc func(float64) bool
+	}{
+		{
+			name: "gt 10.5",
+			slice: []float64{1.2, 2.3, 5.6, 11.12, 13.14, 15.16},
+			expected: []float64{11.12, 13.14, 15.16},
+			filterFunc: func(n float64) bool { return n > 10.5 },
+		},
+		{
+			name: "gt 0",
+			slice: []float64{0, -0.000001, 0.000001, -0.0000001, 0.0000001},
+			expected: []float64{0.000001, 0.0000001},
+			filterFunc: func(n float64) bool { return n > 0 },
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := Float64Slice(test.slice).Filter(test.filterFunc).Value()
+			if !reflect.DeepEqual(test.expected, result) {
+				t.Errorf("expected %v, got %v", test.expected, result)
+			}
+		})
+	}
+}

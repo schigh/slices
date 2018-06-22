@@ -215,6 +215,43 @@ func Test{{.PackageType}}_Reverse(t *testing.T) {
 	}
 }
 
+func Test{{.PackageType}}_Filter(t *testing.T) {
+	tests := []struct {
+		name string
+		slice []{{.BaseType}}
+		expected []{{.BaseType}}
+		filterFunc func({{.BaseType}}) bool
+	}{
+		{
+			name: "starts with f",
+			slice: []{{.BaseType}}{"foo", "bar", "baz", "fizz", "buzz"},
+			expected: []{{.BaseType}}{"foo", "fizz"},
+			filterFunc: func(s {{.BaseType}}) bool { return len(s) > 0 && s[0] == 'f' },
+		},
+		{
+			name: "contains x",
+			slice: []{{.BaseType}}{"max", "foo", "xray", "homer", "boxy", "blue"},
+			expected: []{{.BaseType}}{"max", "xray", "boxy"},
+			filterFunc: func(s {{.BaseType}}) bool {
+				for i := 0; i < len(s); i++ {
+					if s[i] == 'x' {
+						return true
+					}
+				}
+				return false
+			},
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := {{.PackageType}}(test.slice).Filter(test.filterFunc).Value()
+			if !reflect.DeepEqual(test.expected, result) {
+				t.Errorf("expected %v, got %v", test.expected, result)
+			}
+		})
+	}
+}
+
 //endregion
 
 //region BENCHMARKS
