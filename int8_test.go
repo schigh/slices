@@ -415,4 +415,42 @@ func BenchmarkInt8Slice_Reverse(b *testing.B) {
 		})
 	}
 }
+
+func BenchmarkInt8Slice_Filter(b *testing.B) {
+	benchFunc := func(n int8) bool {
+		return n%2 == 0
+	}
+	benchmarks := []struct {
+		name string
+		slice []int8
+	}{
+		{
+			name: "10 elements",
+			slice: internal.GenInt8Slice(10),
+		},
+		{
+			name: "100 elements",
+			slice: internal.GenInt8Slice(100),
+		},
+		{
+			name: "1000 elements",
+			slice: internal.GenInt8Slice(1000),
+		},
+		{
+			name: "10000 elements",
+			slice: internal.GenInt8Slice(10000),
+		},
+		{
+			name: "100000 elements",
+			slice: internal.GenInt8Slice(100000),
+		},
+	}
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				Int8Slice(bm.slice).Filter(benchFunc)
+			}
+		})
+	}
+}
 //endregion

@@ -33,11 +33,19 @@ func (slice {{.SourceStruct}}Slice) Value() []{{.SourceStruct}} {
 }
 `
 
-const maptmplStr = `// Map applies a function to every {{.SourceStruct}} in the slice
+const maptmplStr = `// Map applies a function to every {{.SourceStruct}} in the slice.  This function will mutate the slice in place
 func (slice {{.SourceStruct}}Slice) Map(f func(*{{.SourceStruct}})) {
 	for i, instance := range slice {
 		f(&instance)
 		slice[i] = instance
+	}
+}
+`
+
+const eachtmplStr = `// Each applies a function to every {{.SourceStruct}} in the slice.  This function will NOT mutate the slice in place
+func (slice {{.SourceStruct}}Slice) Each(f func(*{{.SourceStruct}})) {
+	for _, instance := range slice {
+		f(&instance)
 	}
 }
 `
@@ -59,6 +67,7 @@ func (slice {{.SourceStruct}}Slice) Filter(f func(*{{.SourceStruct}}) bool) {{.S
 const (
 	filterStr = "filter"
 	mapStr    = "map"
+	eachStr   = "each"
 )
 
 type tmpl struct {
@@ -120,7 +129,7 @@ func main() {
 
 	// determine scope
 	scope := slices.StringSlice(os.Args[2:]).Unique().Value()
-	allowed := slices.StringSlice([]string{filterStr, mapStr})
+	allowed := slices.StringSlice([]string{filterStr, mapStr, eachStr})
 	var includes, excludes []string
 	for _, s := range scope {
 		if len(s) > 0 && s[0] == '-' {
@@ -224,6 +233,19 @@ func generateOutBytes(tmpl *tmpl) ([]byte, error) {
 		if mapTmplErr := mapTmpl.Execute(bBuff, tmpl); mapTmplErr != nil {
 			printErr("executing template failed for maptmplStr: %v", mapTmplErr)
 			return nil, mapTmplErr
+		}
+		bBuff.Write([]byte(newlineStr))
+	}
+
+	if slices.StringSlice(tmpl.Inclusions).Contains(eachStr) {
+		eachTmpl, tmplErr := template.New("each").Parse(eachtmplStr)
+		if tmplErr != nil {
+			printErr("parsing template failed for eachtmplStr: %v", tmplErr)
+			return nil, tmplErr
+		}
+		if eachTmplErr := eachTmpl.Execute(bBuff, tmpl); eachTmplErr != nil {
+			printErr("executing template failed for eachtmplStr: %v", eachTmplErr)
+			return nil, eachTmplErr
 		}
 		bBuff.Write([]byte(newlineStr))
 	}

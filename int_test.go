@@ -415,4 +415,42 @@ func BenchmarkIntSlice_Reverse(b *testing.B) {
 		})
 	}
 }
+
+func BenchmarkIntSlice_Filter(b *testing.B) {
+	benchFunc := func(n int) bool {
+		return n%2 == 0
+	}
+	benchmarks := []struct {
+		name string
+		slice []int
+	}{
+		{
+			name: "10 elements",
+			slice: internal.GenIntSlice(10),
+		},
+		{
+			name: "100 elements",
+			slice: internal.GenIntSlice(100),
+		},
+		{
+			name: "1000 elements",
+			slice: internal.GenIntSlice(1000),
+		},
+		{
+			name: "10000 elements",
+			slice: internal.GenIntSlice(10000),
+		},
+		{
+			name: "100000 elements",
+			slice: internal.GenIntSlice(100000),
+		},
+	}
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				IntSlice(bm.slice).Filter(benchFunc)
+			}
+		})
+	}
+}
 //endregion

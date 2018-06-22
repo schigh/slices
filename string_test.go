@@ -423,4 +423,43 @@ func BenchmarkStringSlice_Reverse(b *testing.B) {
 		})
 	}
 }
+
+func BenchmarkStringSlice_Filter(b *testing.B) {
+	benchFunc := func(s string) bool {
+		if len(s) == 0 { return false }
+		return s[0] == 'a'
+	}
+	benchmarks := []struct {
+		name string
+		slice []string
+	}{
+		{
+			name: "10 elements",
+			slice: internal.GenStringSlice(10),
+		},
+		{
+			name: "100 elements",
+			slice: internal.GenStringSlice(100),
+		},
+		{
+			name: "1000 elements",
+			slice: internal.GenStringSlice(1000),
+		},
+		{
+			name: "10000 elements",
+			slice: internal.GenStringSlice(10000),
+		},
+		{
+			name: "100000 elements",
+			slice: internal.GenStringSlice(100000),
+		},
+	}
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				StringSlice(bm.slice).Filter(benchFunc)
+			}
+		})
+	}
+}
 //endregion
