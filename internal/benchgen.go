@@ -18,12 +18,13 @@ func GenIntSlice(size int) []int {
 		if r%2 == 0 {
 			sign = -1
 		}
-		out[i] = rand.Int()*sign
+		out[i] = rand.Int() * sign
 	}
 
 	return out
 }
 
+// GenInt8Slice will generate a slice of random int8
 func GenInt8Slice(size int) []int8 {
 	out := make([]int8, size)
 	for i := 0; i < size; i++ {
@@ -32,12 +33,13 @@ func GenInt8Slice(size int) []int8 {
 		if r%2 == 0 {
 			sign = -1
 		}
-		out[i] = int8(rand.Int()*sign)
+		out[i] = int8(rand.Int() * sign)
 	}
 
 	return out
 }
 
+// GenInt16Slice will generate a slice of random int16
 func GenInt16Slice(size int) []int16 {
 	out := make([]int16, size)
 	for i := 0; i < size; i++ {
@@ -46,12 +48,13 @@ func GenInt16Slice(size int) []int16 {
 		if r%2 == 0 {
 			sign = -1
 		}
-		out[i] = int16(rand.Int()*sign)
+		out[i] = int16(rand.Int() * sign)
 	}
 
 	return out
 }
 
+// GenInt32Slice will generate a slice of random int32
 func GenInt32Slice(size int) []int32 {
 	out := make([]int32, size)
 	for i := 0; i < size; i++ {
@@ -60,12 +63,13 @@ func GenInt32Slice(size int) []int32 {
 		if r%2 == 0 {
 			sign = int32(-1)
 		}
-		out[i] = rand.Int31()*sign
+		out[i] = rand.Int31() * sign
 	}
 
 	return out
 }
 
+// GenInt64Slice will generate a slice of random int64
 func GenInt64Slice(size int) []int64 {
 	out := make([]int64, size)
 	for i := 0; i < size; i++ {
@@ -74,12 +78,13 @@ func GenInt64Slice(size int) []int64 {
 		if r%2 == 0 {
 			sign = int64(-1)
 		}
-		out[i] = rand.Int63()*sign
+		out[i] = rand.Int63() * sign
 	}
 
 	return out
 }
 
+// GenUIntSlice will generate a slice of random uint
 func GenUIntSlice(size int) []uint {
 	out := make([]uint, size)
 	for i := 0; i < size; i++ {
@@ -89,6 +94,7 @@ func GenUIntSlice(size int) []uint {
 	return out
 }
 
+// GenUInt8Slice will generate a slice of random uint8
 func GenUInt8Slice(size int) []uint8 {
 	out := make([]uint8, size)
 	for i := 0; i < size; i++ {
@@ -98,6 +104,7 @@ func GenUInt8Slice(size int) []uint8 {
 	return out
 }
 
+// GenUInt16Slice will generate a slice of random uint16
 func GenUInt16Slice(size int) []uint16 {
 	out := make([]uint16, size)
 	for i := 0; i < size; i++ {
@@ -107,6 +114,7 @@ func GenUInt16Slice(size int) []uint16 {
 	return out
 }
 
+// GenUInt32Slice will generate a slice of random uint32
 func GenUInt32Slice(size int) []uint32 {
 	out := make([]uint32, size)
 	for i := 0; i < size; i++ {
@@ -116,6 +124,7 @@ func GenUInt32Slice(size int) []uint32 {
 	return out
 }
 
+// GenUInt64Slice will generate a slice of random uint64
 func GenUInt64Slice(size int) []uint64 {
 	out := make([]uint64, size)
 	for i := 0; i < size; i++ {
@@ -125,6 +134,7 @@ func GenUInt64Slice(size int) []uint64 {
 	return out
 }
 
+// GenFloat32Slice will generate a slice of random float32
 func GenFloat32Slice(size int) []float32 {
 	out := make([]float32, size)
 	for i := 0; i < size; i++ {
@@ -134,6 +144,7 @@ func GenFloat32Slice(size int) []float32 {
 	return out
 }
 
+// GenFloat64Slice will generate a slice of random float64
 func GenFloat64Slice(size int) []float64 {
 	out := make([]float64, size)
 	for i := 0; i < size; i++ {
@@ -143,6 +154,7 @@ func GenFloat64Slice(size int) []float64 {
 	return out
 }
 
+// GenUIntPtrSlice will generate a slice of random uintptr
 func GenUIntPtrSlice(size int) []uintptr {
 	out := make([]uintptr, size)
 	for i := 0; i < size; i++ {
@@ -152,6 +164,7 @@ func GenUIntPtrSlice(size int) []uintptr {
 	return out
 }
 
+// GenStringSlice will generate a slice of random strings
 func GenStringSlice(size int) []string {
 	out := make([]string, size)
 	charset := `abcdefghijklmnopqrstuvwxyz`
