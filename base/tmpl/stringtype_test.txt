@@ -82,53 +82,6 @@ func Test{{.PackageType}}_Contains(t *testing.T) {
 	}
 }
 
-func Test{{.PackageType}}_TruncateZero(t *testing.T) {
-	tests := []struct {
-		name string
-		slice []{{.BaseType}}
-		expected []{{.BaseType}}
-	}{
-		{
-			name: "unaffected",
-			slice: []{{.BaseType}}{"foo","bar","fizz","buzz","baz"},
-			expected: []{{.BaseType}}{"foo","bar","fizz","buzz","baz"},
-		},
-		{
-			name: "unaffected 2",
-			slice: []{{.BaseType}}{"","","","","foo"},
-			expected: []{{.BaseType}}{"","","","","foo"},
-		},
-		{
-			name: "all but one",
-			slice: []{{.BaseType}}{"foo","","","",""},
-			expected: []{{.BaseType}}{"foo"},
-		},
-		{
-			name: "last one only",
-			slice: []{{.BaseType}}{"foo","bar","fizz","buzz",""},
-			expected: []{{.BaseType}}{"foo","bar","fizz","buzz"},
-		},
-		{
-			name: "empties the slice",
-			slice: []{{.BaseType}}{"","","","",""},
-			expected: []{{.BaseType}}{},
-		},
-		{
-			name: "empty slice",
-			slice: []{{.BaseType}}{},
-			expected: []{{.BaseType}}{},
-		},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			result := {{.PackageType}}(test.slice).TruncateZero().Value()
-			if !reflect.DeepEqual(test.expected, result) {
-				t.Errorf("expected %v, got %v", test.expected, result)
-			}
-		})
-	}
-}
-
 func Test{{.PackageType}}_SortAsc(t *testing.T) {
 	tests := []struct {
 		name string

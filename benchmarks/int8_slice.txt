@@ -1,0 +1,30 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/schigh/slices
+BenchmarkInt8Slice_IndexOf/10_elements-8         	300000000	         5.86 ns/op
+BenchmarkInt8Slice_IndexOf/100_elements-8        	30000000	        45.0 ns/op
+BenchmarkInt8Slice_IndexOf/1000_elements-8       	 5000000	       238 ns/op
+BenchmarkInt8Slice_IndexOf/10000_elements-8      	30000000	        45.8 ns/op
+BenchmarkInt8Slice_IndexOf/100000_elements-8     	100000000	        17.9 ns/op
+BenchmarkInt8Slice_Contains/10_elements-8        	200000000	         7.22 ns/op
+BenchmarkInt8Slice_Contains/100_elements-8       	30000000	        47.4 ns/op
+BenchmarkInt8Slice_Contains/1000_elements-8      	10000000	       124 ns/op
+BenchmarkInt8Slice_Contains/10000_elements-8     	30000000	        47.1 ns/op
+BenchmarkInt8Slice_Contains/100000_elements-8    	 5000000	       253 ns/op
+BenchmarkInt8Slice_SortAsc/10_elements-8         	10000000	       125 ns/op
+BenchmarkInt8Slice_SortAsc/100_elements-8        	 3000000	       545 ns/op
+BenchmarkInt8Slice_SortAsc/1000_elements-8       	  200000	      5292 ns/op
+BenchmarkInt8Slice_SortAsc/10000_elements-8      	   30000	     41517 ns/op
+BenchmarkInt8Slice_SortAsc/100000_elements-8     	    5000	    423242 ns/op
+BenchmarkInt8Slice_SortDesc/10_elements-8        	10000000	       134 ns/op
+BenchmarkInt8Slice_SortDesc/100_elements-8       	 3000000	       543 ns/op
+BenchmarkInt8Slice_SortDesc/1000_elements-8      	  300000	      4794 ns/op
+BenchmarkInt8Slice_SortDesc/10000_elements-8     	   50000	     42341 ns/op
+BenchmarkInt8Slice_SortDesc/100000_elements-8    	    5000	    406630 ns/op
+BenchmarkInt8Slice_Reverse/10_elements-8         	200000000	         8.08 ns/op
+BenchmarkInt8Slice_Reverse/100_elements-8        	30000000	        47.4 ns/op
+BenchmarkInt8Slice_Reverse/1000_elements-8       	 3000000	       455 ns/op
+BenchmarkInt8Slice_Reverse/10000_elements-8      	  300000	      4555 ns/op
+BenchmarkInt8Slice_Reverse/100000_elements-8     	   30000	     45747 ns/op
+PASS
+ok  	github.com/schigh/slices	43.867s

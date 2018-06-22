@@ -74,53 +74,6 @@ func TestUInt8Slice_Contains(t *testing.T) {
 	}
 }
 
-func TestUInt8Slice_TruncateZero(t *testing.T) {
-	tests := []struct {
-		name string
-		slice []uint8
-		expected []uint8
-	}{
-		{
-			name: "unaffected",
-			slice: []uint8{1,2,3,4,5},
-			expected: []uint8{1,2,3,4,5},
-		},
-		{
-			name: "unaffected 2",
-			slice: []uint8{0,0,0,0,1},
-			expected: []uint8{0,0,0,0,1},
-		},
-		{
-			name: "all but one",
-			slice: []uint8{1,0,0,0,0},
-			expected: []uint8{1},
-		},
-		{
-			name: "last one only",
-			slice: []uint8{1,2,3,4,0},
-			expected: []uint8{1,2,3,4},
-		},
-		{
-			name: "empties the slice",
-			slice: []uint8{0,0,0,0,0},
-			expected: []uint8{},
-		},
-		{
-			name: "empty slice",
-			slice: []uint8{},
-			expected: []uint8{},
-		},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			result := UInt8Slice(test.slice).TruncateZero().Value()
-			if !reflect.DeepEqual(test.expected, result) {
-				t.Errorf("expected %v, got %v", test.expected, result)
-			}
-		})
-	}
-}
-
 func TestUInt8Slice_SortAsc(t *testing.T) {
 	tests := []struct {
 		name string

@@ -1,0 +1,30 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/schigh/slices
+BenchmarkIntSlice_IndexOf/10_elements-8         	300000000	         5.61 ns/op
+BenchmarkIntSlice_IndexOf/100_elements-8        	30000000	        45.8 ns/op
+BenchmarkIntSlice_IndexOf/1000_elements-8       	 5000000	       295 ns/op
+BenchmarkIntSlice_IndexOf/10000_elements-8      	  500000	      2809 ns/op
+BenchmarkIntSlice_IndexOf/100000_elements-8     	   50000	     31055 ns/op
+BenchmarkIntSlice_Contains/10_elements-8        	200000000	         7.31 ns/op
+BenchmarkIntSlice_Contains/100_elements-8       	30000000	        48.9 ns/op
+BenchmarkIntSlice_Contains/1000_elements-8      	 5000000	       297 ns/op
+BenchmarkIntSlice_Contains/10000_elements-8     	  500000	      2803 ns/op
+BenchmarkIntSlice_Contains/100000_elements-8    	   50000	     30230 ns/op
+BenchmarkIntSlice_SortAsc/10_elements-8         	20000000	       115 ns/op
+BenchmarkIntSlice_SortAsc/100_elements-8        	 3000000	       541 ns/op
+BenchmarkIntSlice_SortAsc/1000_elements-8       	  300000	      4431 ns/op
+BenchmarkIntSlice_SortAsc/10000_elements-8      	   30000	     43403 ns/op
+BenchmarkIntSlice_SortAsc/100000_elements-8     	    3000	    444140 ns/op
+BenchmarkIntSlice_SortDesc/10_elements-8        	20000000	       115 ns/op
+BenchmarkIntSlice_SortDesc/100_elements-8       	 3000000	       522 ns/op
+BenchmarkIntSlice_SortDesc/1000_elements-8      	  300000	      4090 ns/op
+BenchmarkIntSlice_SortDesc/10000_elements-8     	   50000	     40596 ns/op
+BenchmarkIntSlice_SortDesc/100000_elements-8    	    3000	    403846 ns/op
+BenchmarkIntSlice_Reverse/10_elements-8         	200000000	         9.04 ns/op
+BenchmarkIntSlice_Reverse/100_elements-8        	30000000	        49.8 ns/op
+BenchmarkIntSlice_Reverse/1000_elements-8       	 3000000	       425 ns/op
+BenchmarkIntSlice_Reverse/10000_elements-8      	  300000	      4177 ns/op
+BenchmarkIntSlice_Reverse/100000_elements-8     	   30000	     45425 ns/op
+PASS
+ok  	github.com/schigh/slices	45.310s

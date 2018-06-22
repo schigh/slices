@@ -54,22 +54,6 @@ func (slice Float32Slice) Reverse() Float32Slice {
 	return slice
 }
 
-// TruncateZero will trim ALL the zero values off the end of the slice,
-// stopping at the first non-zero value it finds
-func (slice Float32Slice) TruncateZero() Float32Slice {
-	l := len(slice)
-	if l > 0 {
-		for i := l-1; i >= 0; i-- {
-			if slice[i] != 0 {
-				return slice[:i+1]
-			}
-		}
-		return slice[:0]
-	}
-
-	return slice
-}
-
 // Unique filters out duplicate values
 func (slice Float32Slice) Unique() Float32Slice {
 	u := make([]float32, 0, len(slice))

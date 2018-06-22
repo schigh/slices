@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-type TypeBucket struct {
+type typeBucket struct {
 	BaseType    string
 	PackageType string
 	ZeroValue   string
@@ -16,10 +16,10 @@ type TypeBucket struct {
 	TestFile    string
 }
 
-var buckets []TypeBucket
+var buckets []typeBucket
 
 func init() {
-	buckets = []TypeBucket{
+	buckets = []typeBucket{
 		{"int", "IntSlice", "0", "./tmpl/base.txt", "./tmpl/integertype_test.txt"},
 		{"int8", "Int8Slice", "0", "./tmpl/base.txt", "./tmpl/integertype_test.txt"},
 		{"int16", "Int16Slice", "0", "./tmpl/base.txt", "./tmpl/integertype_test.txt"},

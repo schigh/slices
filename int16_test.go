@@ -74,53 +74,6 @@ func TestInt16Slice_Contains(t *testing.T) {
 	}
 }
 
-func TestInt16Slice_TruncateZero(t *testing.T) {
-	tests := []struct {
-		name string
-		slice []int16
-		expected []int16
-	}{
-		{
-			name: "unaffected",
-			slice: []int16{1,2,3,4,5},
-			expected: []int16{1,2,3,4,5},
-		},
-		{
-			name: "unaffected 2",
-			slice: []int16{0,0,0,0,1},
-			expected: []int16{0,0,0,0,1},
-		},
-		{
-			name: "all but one",
-			slice: []int16{1,0,0,0,0},
-			expected: []int16{1},
-		},
-		{
-			name: "last one only",
-			slice: []int16{1,2,3,4,0},
-			expected: []int16{1,2,3,4},
-		},
-		{
-			name: "empties the slice",
-			slice: []int16{0,0,0,0,0},
-			expected: []int16{},
-		},
-		{
-			name: "empty slice",
-			slice: []int16{},
-			expected: []int16{},
-		},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			result := Int16Slice(test.slice).TruncateZero().Value()
-			if !reflect.DeepEqual(test.expected, result) {
-				t.Errorf("expected %v, got %v", test.expected, result)
-			}
-		})
-	}
-}
-
 func TestInt16Slice_SortAsc(t *testing.T) {
 	tests := []struct {
 		name string

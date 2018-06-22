@@ -54,22 +54,6 @@ func (slice Int16Slice) Reverse() Int16Slice {
 	return slice
 }
 
-// TruncateZero will trim ALL the zero values off the end of the slice,
-// stopping at the first non-zero value it finds
-func (slice Int16Slice) TruncateZero() Int16Slice {
-	l := len(slice)
-	if l > 0 {
-		for i := l-1; i >= 0; i-- {
-			if slice[i] != 0 {
-				return slice[:i+1]
-			}
-		}
-		return slice[:0]
-	}
-
-	return slice
-}
-
 // Unique filters out duplicate values
 func (slice Int16Slice) Unique() Int16Slice {
 	u := make([]int16, 0, len(slice))

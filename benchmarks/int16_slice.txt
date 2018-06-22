@@ -1,0 +1,30 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/schigh/slices
+BenchmarkInt16Slice_IndexOf/10_elements-8         	300000000	         5.55 ns/op
+BenchmarkInt16Slice_IndexOf/100_elements-8        	30000000	        45.8 ns/op
+BenchmarkInt16Slice_IndexOf/1000_elements-8       	 5000000	       293 ns/op
+BenchmarkInt16Slice_IndexOf/10000_elements-8      	  500000	      2774 ns/op
+BenchmarkInt16Slice_IndexOf/100000_elements-8     	  300000	      4616 ns/op
+BenchmarkInt16Slice_Contains/10_elements-8        	200000000	         7.31 ns/op
+BenchmarkInt16Slice_Contains/100_elements-8       	30000000	        50.3 ns/op
+BenchmarkInt16Slice_Contains/1000_elements-8      	 5000000	       297 ns/op
+BenchmarkInt16Slice_Contains/10000_elements-8     	  500000	      2792 ns/op
+BenchmarkInt16Slice_Contains/100000_elements-8    	 1000000	      1092 ns/op
+BenchmarkInt16Slice_SortAsc/10_elements-8         	20000000	       115 ns/op
+BenchmarkInt16Slice_SortAsc/100_elements-8        	 3000000	       506 ns/op
+BenchmarkInt16Slice_SortAsc/1000_elements-8       	  300000	      4247 ns/op
+BenchmarkInt16Slice_SortAsc/10000_elements-8      	   50000	     38942 ns/op
+BenchmarkInt16Slice_SortAsc/100000_elements-8     	    3000	    405362 ns/op
+BenchmarkInt16Slice_SortDesc/10_elements-8        	20000000	       120 ns/op
+BenchmarkInt16Slice_SortDesc/100_elements-8       	 3000000	       555 ns/op
+BenchmarkInt16Slice_SortDesc/1000_elements-8      	  300000	      4204 ns/op
+BenchmarkInt16Slice_SortDesc/10000_elements-8     	   50000	     43965 ns/op
+BenchmarkInt16Slice_SortDesc/100000_elements-8    	    3000	    469577 ns/op
+BenchmarkInt16Slice_Reverse/10_elements-8         	200000000	         8.41 ns/op
+BenchmarkInt16Slice_Reverse/100_elements-8        	30000000	        45.7 ns/op
+BenchmarkInt16Slice_Reverse/1000_elements-8       	 3000000	       435 ns/op
+BenchmarkInt16Slice_Reverse/10000_elements-8      	  300000	      4192 ns/op
+BenchmarkInt16Slice_Reverse/100000_elements-8     	   30000	     49136 ns/op
+PASS
+ok  	github.com/schigh/slices	44.859s

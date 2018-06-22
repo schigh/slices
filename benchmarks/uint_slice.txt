@@ -1,0 +1,30 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/schigh/slices
+BenchmarkUIntSlice_IndexOf/10_elements-8         	200000000	         8.95 ns/op
+BenchmarkUIntSlice_IndexOf/100_elements-8        	20000000	        68.8 ns/op
+BenchmarkUIntSlice_IndexOf/1000_elements-8       	 2000000	       620 ns/op
+BenchmarkUIntSlice_IndexOf/10000_elements-8      	  300000	      5823 ns/op
+BenchmarkUIntSlice_IndexOf/100000_elements-8     	   30000	     56091 ns/op
+BenchmarkUIntSlice_Contains/10_elements-8        	200000000	         9.89 ns/op
+BenchmarkUIntSlice_Contains/100_elements-8       	20000000	        70.0 ns/op
+BenchmarkUIntSlice_Contains/1000_elements-8      	 3000000	       592 ns/op
+BenchmarkUIntSlice_Contains/10000_elements-8     	  300000	      5699 ns/op
+BenchmarkUIntSlice_Contains/100000_elements-8    	   30000	     57753 ns/op
+BenchmarkUIntSlice_SortAsc/10_elements-8         	20000000	       127 ns/op
+BenchmarkUIntSlice_SortAsc/100_elements-8        	 2000000	       602 ns/op
+BenchmarkUIntSlice_SortAsc/1000_elements-8       	  300000	      4269 ns/op
+BenchmarkUIntSlice_SortAsc/10000_elements-8      	   50000	     40968 ns/op
+BenchmarkUIntSlice_SortAsc/100000_elements-8     	    3000	    449559 ns/op
+BenchmarkUIntSlice_SortDesc/10_elements-8        	20000000	       114 ns/op
+BenchmarkUIntSlice_SortDesc/100_elements-8       	 3000000	       597 ns/op
+BenchmarkUIntSlice_SortDesc/1000_elements-8      	  300000	      4618 ns/op
+BenchmarkUIntSlice_SortDesc/10000_elements-8     	   30000	     42613 ns/op
+BenchmarkUIntSlice_SortDesc/100000_elements-8    	    3000	    438359 ns/op
+BenchmarkUIntSlice_Reverse/10_elements-8         	200000000	         8.28 ns/op
+BenchmarkUIntSlice_Reverse/100_elements-8        	30000000	        47.5 ns/op
+BenchmarkUIntSlice_Reverse/1000_elements-8       	 3000000	       473 ns/op
+BenchmarkUIntSlice_Reverse/10000_elements-8      	  300000	      4671 ns/op
+BenchmarkUIntSlice_Reverse/100000_elements-8     	   30000	     46334 ns/op
+PASS
+ok  	github.com/schigh/slices	49.440s

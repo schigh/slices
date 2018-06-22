@@ -81,53 +81,6 @@ func Test{{.PackageType}}_Contains(t *testing.T) {
 	}
 }
 
-func Test{{.PackageType}}_TruncateZero(t *testing.T) {
-	tests := []struct {
-		name string
-		slice []{{.BaseType}}
-		expected []{{.BaseType}}
-	}{
-		{
-			name: "unaffected",
-			slice: []{{.BaseType}}{1,2,3,4,5},
-			expected: []{{.BaseType}}{1,2,3,4,5},
-		},
-		{
-			name: "unaffected 2",
-			slice: []{{.BaseType}}{0,0,0,0,1},
-			expected: []{{.BaseType}}{0,0,0,0,1},
-		},
-		{
-			name: "all but one",
-			slice: []{{.BaseType}}{1,0,0,0,0},
-			expected: []{{.BaseType}}{1},
-		},
-		{
-			name: "last one only",
-			slice: []{{.BaseType}}{1,2,3,4,0},
-			expected: []{{.BaseType}}{1,2,3,4},
-		},
-		{
-			name: "empties the slice",
-			slice: []{{.BaseType}}{0,0,0,0,0},
-			expected: []{{.BaseType}}{},
-		},
-		{
-			name: "empty slice",
-			slice: []{{.BaseType}}{},
-			expected: []{{.BaseType}}{},
-		},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			result := {{.PackageType}}(test.slice).TruncateZero().Value()
-			if !reflect.DeepEqual(test.expected, result) {
-				t.Errorf("expected %v, got %v", test.expected, result)
-			}
-		})
-	}
-}
-
 func Test{{.PackageType}}_SortAsc(t *testing.T) {
 	tests := []struct {
 		name string

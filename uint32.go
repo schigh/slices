@@ -54,22 +54,6 @@ func (slice UInt32Slice) Reverse() UInt32Slice {
 	return slice
 }
 
-// TruncateZero will trim ALL the zero values off the end of the slice,
-// stopping at the first non-zero value it finds
-func (slice UInt32Slice) TruncateZero() UInt32Slice {
-	l := len(slice)
-	if l > 0 {
-		for i := l-1; i >= 0; i-- {
-			if slice[i] != 0 {
-				return slice[:i+1]
-			}
-		}
-		return slice[:0]
-	}
-
-	return slice
-}
-
 // Unique filters out duplicate values
 func (slice UInt32Slice) Unique() UInt32Slice {
 	u := make([]uint32, 0, len(slice))

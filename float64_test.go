@@ -72,53 +72,6 @@ func TestFloat64Slice_Contains(t *testing.T) {
 	}
 }
 
-func TestFloat64Slice_TruncateZero(t *testing.T) {
-	tests := []struct {
-		name string
-		slice []float64
-		expected []float64
-	}{
-		{
-			name: "unaffected",
-			slice: []float64{1.0,2.2,3.1,4.3,5},
-			expected: []float64{1.0,2.2,3.1,4.3,5},
-		},
-		{
-			name: "unaffected 2",
-			slice: []float64{0,0,0,0,1.99},
-			expected: []float64{0,0,0,0,1.99},
-		},
-		{
-			name: "all but one",
-			slice: []float64{1.23,0.0,0,0,0},
-			expected: []float64{1.23},
-		},
-		{
-			name: "last one only",
-			slice: []float64{1,2.1,3.2,4.3,0},
-			expected: []float64{1,2.1,3.2,4.3},
-		},
-		{
-			name: "empties the slice",
-			slice: []float64{0,0,0.0,0,0},
-			expected: []float64{},
-		},
-		{
-			name: "empty slice",
-			slice: []float64{},
-			expected: []float64{},
-		},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			result := Float64Slice(test.slice).TruncateZero().Value()
-			if !reflect.DeepEqual(test.expected, result) {
-				t.Errorf("expected %v, got %v", test.expected, result)
-			}
-		})
-	}
-}
-
 func TestFloat64Slice_SortAsc(t *testing.T) {
 	tests := []struct {
 		name string
