@@ -8,22 +8,22 @@
 
 Slices bolts on some generics-ish functionality to native Go data types when represented as a slice.  Currently, the following types are supported:
 
-| Go Slice Type | Slices Type    |
-| ------------- | -------------- |
-| `[]int`       | `IntSlice`     |
-| `[]int8`      | `Int8Slice`    |
-| `[]int16`     | `Int16Slice`   |
-| `[]int32`     | `Int32Slice`   |
-| `[]int64`     | `Int64Slice`   |
-| `[]uint`      | `UIntSlice`    |
-| `[]uint8`     | `UInt8Slice`   |
-| `[]uint16`    | `UInt16Slice`  |
-| `[]uint32`    | `UInt32Slice`  |
-| `[]uint64`    | `UInt64Slice`  |
-| `[]uintptr`   | `UIntPtrSlice` |
-| `[]float32`   | `Float32Slice` |
-| `[]float64`   | `Float64Slice` |
-| `[]string`    | `StringSlice`  |
+| Go Slice Type | Slices Type    | xtra |
+| ------------- | -------------- | ---- |
+| `[]int`       | `IntSlice`     | [benchmark](/benchmarks/int_slice.txt)     |
+| `[]int8`      | `Int8Slice`    | [benchmark](/benchmarks/int8_slice.txt)     |
+| `[]int16`     | `Int16Slice`   | [benchmark](/benchmarks/int16_slice.txt)     |
+| `[]int32`     | `Int32Slice`   | [benchmark](/benchmarks/int32_slice.txt)     |
+| `[]int64`     | `Int64Slice`   | [benchmark](/benchmarks/int64_slice.txt)     |
+| `[]uint`      | `UIntSlice`    | [benchmark](/benchmarks/uint_slice.txt)     |
+| `[]uint8`     | `UInt8Slice`   | [benchmark](/benchmarks/uint8_slice.txt)     |
+| `[]uint16`    | `UInt16Slice`  | [benchmark](/benchmarks/uint16_slice.txt)     |
+| `[]uint32`    | `UInt32Slice`  | [benchmark](/benchmarks/uint32_slice.txt)     |
+| `[]uint64`    | `UInt64Slice`  | [benchmark](/benchmarks/uint64_slice.txt)     |
+| `[]uintptr`   | `UIntPtrSlice` | [benchmark](/benchmarks/intptr_slice.txt)     |
+| `[]float32`   | `Float32Slice` | [benchmark](/benchmarks/float32_slice.txt)     |
+| `[]float64`   | `Float64Slice` | [benchmark](/benchmarks/float64_slice.txt)     |
+| `[]string`    | `StringSlice`  | [benchmark](/benchmarks/string_slice.txt)     |
 
 For the above types, the following operations are supported (_x_ is the type in the slice):
 
@@ -35,8 +35,48 @@ For the above types, the following operations are supported (_x_ is the type in 
 | SortDesc()             | Sort the slice in descending order                           |
 | Reverse()              | Reverses the slice                                           |
 | Filter(func(_x_) bool) | Applies a filter function to every item in the slice and return all items where the filter returns true |
-| Copy()				 | Returns a copy from the original backing array/slice.  This is useful if you no longer need to keep the original backing array hanging around in memory and no longer wish to reference it. For small backing arrays, this function doesn't really produce any benefit |
+| ~~Copy()~~				 | ~~Returns a copy from the original backing array/slice.  This is useful if you no longer need to keep the original backing array hanging around in memory and no longer wish to reference it. For small backing arrays, this function doesn't really produce any benefit~~ (this is still WIP) |
 | Value()                | Returns the native type slice value                          |
+
+#### Some examples...
+```go
+package main
+
+import (
+	"fmt"
+	
+	"github.com/schigh/slices"
+)
+
+func main() {
+	orig := []string{"foo", "bar", "baz", "fizz", "buzz"}
+	startsWithF := slices.StringSlice(orig).Filter(func(s string) bool {
+		return len(s) > 0 && s[0] == 'f'
+	}).Value()
+	
+	fmt.Println(startsWithF)
+	// ["foo", "fizz"]
+}
+```
+```go
+package main
+
+import (
+	"fmt"
+	
+	"github.com/schigh/slices"
+)
+
+func main() {
+	orig := []int{9,1,6,2,3,4,3,4,5,7,8,9,0}
+	unique := slices.IntSlice(orig).Unique().SortDesc().Value()
+	
+	fmt.Println(unique)
+	// [9,8,7,6,5,4,3,2,1,0]
+}
+```
+
+Check out the GoDoc for more information.
 
 ## Slice Generator
 
