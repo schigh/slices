@@ -1,35 +1,35 @@
 goos: darwin
 goarch: amd64
 pkg: github.com/schigh/slices
-BenchmarkUInt16Slice_IndexOf/10_elements-8         	200000000	         9.20 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_IndexOf/100_elements-8        	20000000	        70.3 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_IndexOf/1000_elements-8       	 2000000	       624 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_IndexOf/10000_elements-8      	  300000	      6116 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_IndexOf/100000_elements-8     	  100000	     20073 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Contains/10_elements-8        	100000000	        10.4 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Contains/100_elements-8       	20000000	        73.3 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Contains/1000_elements-8      	 2000000	       607 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Contains/10000_elements-8     	  200000	      6196 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Contains/100000_elements-8    	   30000	     58510 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_SortAsc/10_elements-8         	20000000	       118 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_SortAsc/100_elements-8        	 3000000	       571 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_SortAsc/1000_elements-8       	  300000	      4497 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_SortAsc/10000_elements-8      	   30000	     41376 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_SortAsc/100000_elements-8     	    3000	    391092 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_SortDesc/10_elements-8        	20000000	       115 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_SortDesc/100_elements-8       	 3000000	       517 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_SortDesc/1000_elements-8      	  300000	      4122 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_SortDesc/10000_elements-8     	   30000	     39975 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_SortDesc/100000_elements-8    	    3000	    429566 ns/op	      64 B/op	       2 allocs/op
-BenchmarkUInt16Slice_Reverse/10_elements-8         	200000000	         8.34 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Reverse/100_elements-8        	30000000	        46.6 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Reverse/1000_elements-8       	 3000000	       459 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Reverse/10000_elements-8      	  300000	      4623 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Reverse/100000_elements-8     	   30000	     46245 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUInt16Slice_Filter/10_elements-8          	30000000	        52.6 ns/op	      32 B/op	       1 allocs/op
-BenchmarkUInt16Slice_Filter/100_elements-8         	 5000000	       332 ns/op	     208 B/op	       1 allocs/op
-BenchmarkUInt16Slice_Filter/1000_elements-8        	  500000	      3678 ns/op	    2048 B/op	       1 allocs/op
-BenchmarkUInt16Slice_Filter/10000_elements-8       	   20000	     78436 ns/op	   20480 B/op	       1 allocs/op
-BenchmarkUInt16Slice_Filter/100000_elements-8      	    2000	    847596 ns/op	  204800 B/op	       1 allocs/op
+BenchmarkUInt16Slice_IndexOf/10_elements-8         	200000000	        10.9 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_IndexOf/100_elements-8        	20000000	        64.6 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_IndexOf/1000_elements-8       	 3000000	       650 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_IndexOf/10000_elements-8      	  200000	      8841 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_IndexOf/100000_elements-8     	   20000	     57290 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Contains/10_elements-8        	200000000	         9.61 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Contains/100_elements-8       	20000000	        72.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Contains/1000_elements-8      	 2000000	       653 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Contains/10000_elements-8     	  300000	      6463 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Contains/100000_elements-8    	   10000	    119795 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_SortAsc/10_elements-8         	10000000	       213 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_SortAsc/100_elements-8        	 3000000	       771 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_SortAsc/1000_elements-8       	  300000	      6070 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_SortAsc/10000_elements-8      	   30000	     63383 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_SortAsc/100000_elements-8     	    3000	    468905 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_SortDesc/10_elements-8        	20000000	       116 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_SortDesc/100_elements-8       	 3000000	       523 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_SortDesc/1000_elements-8      	  300000	      4198 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_SortDesc/10000_elements-8     	   50000	     40009 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_SortDesc/100000_elements-8    	    3000	    446641 ns/op	      64 B/op	       2 allocs/op
+BenchmarkUInt16Slice_Reverse/10_elements-8         	200000000	         8.02 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Reverse/100_elements-8        	30000000	        45.4 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Reverse/1000_elements-8       	 3000000	       500 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Reverse/10000_elements-8      	  300000	      4993 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Reverse/100000_elements-8     	   30000	     48925 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUInt16Slice_Filter/10_elements-8          	30000000	        66.1 ns/op	      32 B/op	       1 allocs/op
+BenchmarkUInt16Slice_Filter/100_elements-8         	 3000000	       637 ns/op	     208 B/op	       1 allocs/op
+BenchmarkUInt16Slice_Filter/1000_elements-8        	  300000	      5231 ns/op	    2048 B/op	       1 allocs/op
+BenchmarkUInt16Slice_Filter/10000_elements-8       	   10000	    117010 ns/op	   20480 B/op	       1 allocs/op
+BenchmarkUInt16Slice_Filter/100000_elements-8      	    1000	   1229740 ns/op	  204800 B/op	       1 allocs/op
 PASS
-ok  	github.com/schigh/slices	54.965s
+ok  	github.com/schigh/slices	58.918s
