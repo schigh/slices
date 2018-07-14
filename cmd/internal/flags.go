@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"errors"
 	"fmt"
 	"regexp"
 )
@@ -42,7 +41,7 @@ func OperationsFromFlags(flags string) ([]Operation, error) {
 			operation.Template = EachTmpl
 			operation.Name = "each"
 		default:
-			return ops, errors.New(fmt.Sprintf("unknown operation: '%s', op"))
+			return ops, fmt.Errorf("unknown operation: '%s'", op)
 		}
 
 		ops = append(ops, operation)
