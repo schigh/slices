@@ -18,7 +18,7 @@ func (slice AccountSlice) Map(f func(Account) Account) {
 	}
 }
 
-// Filter evaluates every element in the slice, and returns all Account 
+// Filter evaluates every element in the slice, and returns all Account
 // instances where the eval function returns true
 func (slice AccountSlice) Filter(f func(Account) bool) AccountSlice {
 	out := make([]Account, 0, len(slice))
@@ -37,4 +37,3 @@ func (slice AccountSlice) Each(f func(Account)) {
 		f(v)
 	}
 }
-

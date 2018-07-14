@@ -18,7 +18,7 @@ func (slice UserPtrSlice) Map(f func(*User) *User) {
 	}
 }
 
-// Filter evaluates every element in the slice, and returns all User 
+// Filter evaluates every element in the slice, and returns all User
 // instances where the eval function returns true
 func (slice UserPtrSlice) Filter(f func(*User) bool) UserPtrSlice {
 	out := make([]*User, 0, len(slice))
@@ -37,4 +37,3 @@ func (slice UserPtrSlice) Each(f func(*User)) {
 		f(v)
 	}
 }
-

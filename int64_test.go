@@ -15,27 +15,27 @@ import (
 // IndexOf
 func TestInt64Slice_IndexOf(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []int64
-		needle int64
+		name     string
+		slice    []int64
+		needle   int64
 		expected int
 	}{
 		{
-			name: "only item",
-			slice: []int64{1},
-			needle: 1,
+			name:     "only item",
+			slice:    []int64{1},
+			needle:   1,
 			expected: 0,
 		},
 		{
-			name: "at index 1",
-			slice: []int64{0,1,1},
-			needle: 1,
+			name:     "at index 1",
+			slice:    []int64{0, 1, 1},
+			needle:   1,
 			expected: 1,
 		},
 		{
-			name: "missing",
-			slice: []int64{1,2,3,4},
-			needle: 5,
+			name:     "missing",
+			slice:    []int64{1, 2, 3, 4},
+			needle:   5,
 			expected: NotInSlice,
 		},
 	}
@@ -52,21 +52,21 @@ func TestInt64Slice_IndexOf(t *testing.T) {
 // Contains
 func TestInt64Slice_Contains(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []int64
-		needle int64
+		name     string
+		slice    []int64
+		needle   int64
 		expected bool
 	}{
 		{
-			name: "present",
-			slice: []int64{1,2,3,4},
-			needle: 4,
+			name:     "present",
+			slice:    []int64{1, 2, 3, 4},
+			needle:   4,
 			expected: true,
 		},
 		{
-			name: "not present",
-			slice: []int64{1,2,3,4},
-			needle: 5,
+			name:     "not present",
+			slice:    []int64{1, 2, 3, 4},
+			needle:   5,
 			expected: false,
 		},
 	}
@@ -83,29 +83,29 @@ func TestInt64Slice_Contains(t *testing.T) {
 // SortAsc
 func TestInt64Slice_SortAsc(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []int64
+		name     string
+		slice    []int64
 		expected []int64
 	}{
 		{
-			name: "empty",
-			slice: []int64{},
+			name:     "empty",
+			slice:    []int64{},
 			expected: []int64{},
 		},
 		{
-			name: "already sorted",
-			slice: []int64{0,1,2,3,4,5},
-			expected: []int64{0,1,2,3,4,5},
+			name:     "already sorted",
+			slice:    []int64{0, 1, 2, 3, 4, 5},
+			expected: []int64{0, 1, 2, 3, 4, 5},
 		},
 		{
-			name: "reversed",
-			slice: []int64{5,4,3,2,1,0},
-			expected: []int64{0,1,2,3,4,5},
+			name:     "reversed",
+			slice:    []int64{5, 4, 3, 2, 1, 0},
+			expected: []int64{0, 1, 2, 3, 4, 5},
 		},
 		{
-			name: "random",
-			slice: []int64{3,1,4,5,0,2},
-			expected: []int64{0,1,2,3,4,5},
+			name:     "random",
+			slice:    []int64{3, 1, 4, 5, 0, 2},
+			expected: []int64{0, 1, 2, 3, 4, 5},
 		},
 	}
 	for _, test := range tests {
@@ -121,29 +121,29 @@ func TestInt64Slice_SortAsc(t *testing.T) {
 // SortDesc
 func TestInt64Slice_SortDesc(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []int64
+		name     string
+		slice    []int64
 		expected []int64
 	}{
 		{
-			name: "empty",
-			slice: []int64{},
+			name:     "empty",
+			slice:    []int64{},
 			expected: []int64{},
 		},
 		{
-			name: "already sorted",
-			slice: []int64{5,4,3,2,1,0},
-			expected: []int64{5,4,3,2,1,0},
+			name:     "already sorted",
+			slice:    []int64{5, 4, 3, 2, 1, 0},
+			expected: []int64{5, 4, 3, 2, 1, 0},
 		},
 		{
-			name: "reversed",
-			slice: []int64{0,1,2,3,4,5},
-			expected: []int64{5,4,3,2,1,0},
+			name:     "reversed",
+			slice:    []int64{0, 1, 2, 3, 4, 5},
+			expected: []int64{5, 4, 3, 2, 1, 0},
 		},
 		{
-			name: "random",
-			slice: []int64{3,1,4,5,0,2},
-			expected: []int64{5,4,3,2,1,0},
+			name:     "random",
+			slice:    []int64{3, 1, 4, 5, 0, 2},
+			expected: []int64{5, 4, 3, 2, 1, 0},
 		},
 	}
 	for _, test := range tests {
@@ -159,24 +159,24 @@ func TestInt64Slice_SortDesc(t *testing.T) {
 // Unique
 func TestInt64Slice_Unique(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []int64
+		name     string
+		slice    []int64
 		expected []int64
 	}{
 		{
-			name: "unaffected",
-			slice: []int64{0,1,2,3,4,5},
-			expected: []int64{0,1,2,3,4,5},
+			name:     "unaffected",
+			slice:    []int64{0, 1, 2, 3, 4, 5},
+			expected: []int64{0, 1, 2, 3, 4, 5},
 		},
 		{
-			name: "one extra five",
-			slice: []int64{5,0,1,2,3,4,5},
-			expected: []int64{5,0,1,2,3,4},
+			name:     "one extra five",
+			slice:    []int64{5, 0, 1, 2, 3, 4, 5},
+			expected: []int64{5, 0, 1, 2, 3, 4},
 		},
 		{
-			name: "extras everywhere",
-			slice: []int64{0,0,1,0,1,2,2,2,3,0,3,4,2,3,4,4,2,1,0},
-			expected: []int64{0,1,2,3,4},
+			name:     "extras everywhere",
+			slice:    []int64{0, 0, 1, 0, 1, 2, 2, 2, 3, 0, 3, 4, 2, 3, 4, 4, 2, 1, 0},
+			expected: []int64{0, 1, 2, 3, 4},
 		},
 	}
 	for _, test := range tests {
@@ -192,19 +192,19 @@ func TestInt64Slice_Unique(t *testing.T) {
 // Reverse
 func TestInt64Slice_Reverse(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []int64
+		name     string
+		slice    []int64
 		expected []int64
 	}{
 		{
-			name: "even length",
-			slice: []int64{0,1,2,3,4,5},
-			expected: []int64{5,4,3,2,1,0},
+			name:     "even length",
+			slice:    []int64{0, 1, 2, 3, 4, 5},
+			expected: []int64{5, 4, 3, 2, 1, 0},
 		},
 		{
-			name: "odd length",
-			slice: []int64{0,1,2,3,4,5,6},
-			expected: []int64{6,5,4,3,2,1,0},
+			name:     "odd length",
+			slice:    []int64{0, 1, 2, 3, 4, 5, 6},
+			expected: []int64{6, 5, 4, 3, 2, 1, 0},
 		},
 	}
 	for _, test := range tests {
@@ -220,21 +220,21 @@ func TestInt64Slice_Reverse(t *testing.T) {
 // Filter
 func TestInt64Slice_Filter(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []int64
-		expected []int64
+		name       string
+		slice      []int64
+		expected   []int64
 		filterFunc func(int64) bool
 	}{
 		{
-			name: "gt 10",
-			slice: []int64{1, 2, 5, 11, 13, 15},
-			expected: []int64{11, 13, 15},
+			name:       "gt 10",
+			slice:      []int64{1, 2, 5, 11, 13, 15},
+			expected:   []int64{11, 13, 15},
 			filterFunc: func(n int64) bool { return n > 10 },
 		},
 		{
-			name: "mod 3",
-			slice: []int64{1, 2, 6, 11, 12, 15, 17},
-			expected: []int64{6, 12, 15},
+			name:       "mod 3",
+			slice:      []int64{1, 2, 6, 11, 12, 15, 17},
+			expected:   []int64{6, 12, 15},
 			filterFunc: func(n int64) bool { return n%3 == 0 },
 		},
 	}
@@ -253,20 +253,20 @@ func TestInt64Slice_Each(t *testing.T) {
 
 	var rabbit int64
 	tests := []struct {
-		name string
-		slice []int64
+		name     string
+		slice    []int64
 		expected int64
 		eachFunc func(int64)
 	}{
 		{
-			name: "add n",
-			slice: []int64{1, 2, 5, 11, 13, 15},
+			name:     "add n",
+			slice:    []int64{1, 2, 5, 11, 13, 15},
 			expected: 47,
 			eachFunc: func(n int64) { rabbit += n },
 		},
 		{
-			name: "subtract n",
-			slice: []int64{1, 2, 6, 8, 12},
+			name:     "subtract n",
+			slice:    []int64{1, 2, 6, 8, 12},
 			expected: 18,
 			eachFunc: func(n int64) { rabbit -= n },
 		},
@@ -285,22 +285,22 @@ func TestInt64Slice_Each(t *testing.T) {
 // Map
 func TestInt64Slice_Map(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []int64
+		name     string
+		slice    []int64
 		expected []int64
-		mapFunc func(int64) int64
+		mapFunc  func(int64) int64
 	}{
 		{
-			name: "add 3",
-			slice: []int64{1, 2, 5, 11, 13, 15},
+			name:     "add 3",
+			slice:    []int64{1, 2, 5, 11, 13, 15},
 			expected: []int64{4, 5, 8, 14, 16, 18},
-			mapFunc: func(n int64) int64 { return n + 3 },
+			mapFunc:  func(n int64) int64 { return n + 3 },
 		},
 		{
-			name: "set mod 2",
-			slice: []int64{1, 2, 6, 8, 12, 15, 17},
+			name:     "set mod 2",
+			slice:    []int64{1, 2, 6, 8, 12, 15, 17},
 			expected: []int64{1, 0, 0, 0, 0, 1, 1},
-			mapFunc: func(n int64) int64 { return int64(n%2) },
+			mapFunc:  func(n int64) int64 { return int64(n % 2) },
 		},
 	}
 
@@ -320,27 +320,27 @@ func TestInt64Slice_Map(t *testing.T) {
 // IndexOf
 func BenchmarkInt64Slice_IndexOf(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []int64
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenInt64Slice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenInt64Slice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenInt64Slice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenInt64Slice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenInt64Slice(100000),
 		},
 	}
@@ -356,27 +356,27 @@ func BenchmarkInt64Slice_IndexOf(b *testing.B) {
 // Contains
 func BenchmarkInt64Slice_Contains(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []int64
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenInt64Slice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenInt64Slice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenInt64Slice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenInt64Slice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenInt64Slice(100000),
 		},
 	}
@@ -392,27 +392,27 @@ func BenchmarkInt64Slice_Contains(b *testing.B) {
 // SortAsc
 func BenchmarkInt64Slice_SortAsc(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []int64
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenInt64Slice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenInt64Slice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenInt64Slice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenInt64Slice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenInt64Slice(100000),
 		},
 	}
@@ -428,27 +428,27 @@ func BenchmarkInt64Slice_SortAsc(b *testing.B) {
 // SortDesc
 func BenchmarkInt64Slice_SortDesc(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []int64
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenInt64Slice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenInt64Slice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenInt64Slice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenInt64Slice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenInt64Slice(100000),
 		},
 	}
@@ -464,27 +464,27 @@ func BenchmarkInt64Slice_SortDesc(b *testing.B) {
 // Reverse
 func BenchmarkInt64Slice_Reverse(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []int64
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenInt64Slice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenInt64Slice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenInt64Slice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenInt64Slice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenInt64Slice(100000),
 		},
 	}
@@ -503,27 +503,27 @@ func BenchmarkInt64Slice_Filter(b *testing.B) {
 		return n%2 == 0
 	}
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []int64
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenInt64Slice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenInt64Slice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenInt64Slice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenInt64Slice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenInt64Slice(100000),
 		},
 	}
@@ -543,27 +543,27 @@ func BenchmarkInt64Slice_Each(b *testing.B) {
 		rabbit = n
 	}
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []int64
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenInt64Slice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenInt64Slice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenInt64Slice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenInt64Slice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenInt64Slice(100000),
 		},
 	}
@@ -585,27 +585,27 @@ func BenchmarkInt64Slice_Map(b *testing.B) {
 		return n
 	}
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []int64
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenInt64Slice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenInt64Slice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenInt64Slice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenInt64Slice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenInt64Slice(100000),
 		},
 	}
@@ -617,4 +617,5 @@ func BenchmarkInt64Slice_Map(b *testing.B) {
 		})
 	}
 }
+
 // endregion

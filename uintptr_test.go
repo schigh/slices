@@ -15,27 +15,27 @@ import (
 // IndexOf
 func TestUIntPtrSlice_IndexOf(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []uintptr
-		needle uintptr
+		name     string
+		slice    []uintptr
+		needle   uintptr
 		expected int
 	}{
 		{
-			name: "only item",
-			slice: []uintptr{1},
-			needle: 1,
+			name:     "only item",
+			slice:    []uintptr{1},
+			needle:   1,
 			expected: 0,
 		},
 		{
-			name: "at index 1",
-			slice: []uintptr{0,1,1},
-			needle: 1,
+			name:     "at index 1",
+			slice:    []uintptr{0, 1, 1},
+			needle:   1,
 			expected: 1,
 		},
 		{
-			name: "missing",
-			slice: []uintptr{1,2,3,4},
-			needle: 5,
+			name:     "missing",
+			slice:    []uintptr{1, 2, 3, 4},
+			needle:   5,
 			expected: NotInSlice,
 		},
 	}
@@ -52,21 +52,21 @@ func TestUIntPtrSlice_IndexOf(t *testing.T) {
 // Contains
 func TestUIntPtrSlice_Contains(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []uintptr
-		needle uintptr
+		name     string
+		slice    []uintptr
+		needle   uintptr
 		expected bool
 	}{
 		{
-			name: "present",
-			slice: []uintptr{1,2,3,4},
-			needle: 4,
+			name:     "present",
+			slice:    []uintptr{1, 2, 3, 4},
+			needle:   4,
 			expected: true,
 		},
 		{
-			name: "not present",
-			slice: []uintptr{1,2,3,4},
-			needle: 5,
+			name:     "not present",
+			slice:    []uintptr{1, 2, 3, 4},
+			needle:   5,
 			expected: false,
 		},
 	}
@@ -83,29 +83,29 @@ func TestUIntPtrSlice_Contains(t *testing.T) {
 // SortAsc
 func TestUIntPtrSlice_SortAsc(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []uintptr
+		name     string
+		slice    []uintptr
 		expected []uintptr
 	}{
 		{
-			name: "empty",
-			slice: []uintptr{},
+			name:     "empty",
+			slice:    []uintptr{},
 			expected: []uintptr{},
 		},
 		{
-			name: "already sorted",
-			slice: []uintptr{0,1,2,3,4,5},
-			expected: []uintptr{0,1,2,3,4,5},
+			name:     "already sorted",
+			slice:    []uintptr{0, 1, 2, 3, 4, 5},
+			expected: []uintptr{0, 1, 2, 3, 4, 5},
 		},
 		{
-			name: "reversed",
-			slice: []uintptr{5,4,3,2,1,0},
-			expected: []uintptr{0,1,2,3,4,5},
+			name:     "reversed",
+			slice:    []uintptr{5, 4, 3, 2, 1, 0},
+			expected: []uintptr{0, 1, 2, 3, 4, 5},
 		},
 		{
-			name: "random",
-			slice: []uintptr{3,1,4,5,0,2},
-			expected: []uintptr{0,1,2,3,4,5},
+			name:     "random",
+			slice:    []uintptr{3, 1, 4, 5, 0, 2},
+			expected: []uintptr{0, 1, 2, 3, 4, 5},
 		},
 	}
 	for _, test := range tests {
@@ -121,29 +121,29 @@ func TestUIntPtrSlice_SortAsc(t *testing.T) {
 // SortDesc
 func TestUIntPtrSlice_SortDesc(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []uintptr
+		name     string
+		slice    []uintptr
 		expected []uintptr
 	}{
 		{
-			name: "empty",
-			slice: []uintptr{},
+			name:     "empty",
+			slice:    []uintptr{},
 			expected: []uintptr{},
 		},
 		{
-			name: "already sorted",
-			slice: []uintptr{5,4,3,2,1,0},
-			expected: []uintptr{5,4,3,2,1,0},
+			name:     "already sorted",
+			slice:    []uintptr{5, 4, 3, 2, 1, 0},
+			expected: []uintptr{5, 4, 3, 2, 1, 0},
 		},
 		{
-			name: "reversed",
-			slice: []uintptr{0,1,2,3,4,5},
-			expected: []uintptr{5,4,3,2,1,0},
+			name:     "reversed",
+			slice:    []uintptr{0, 1, 2, 3, 4, 5},
+			expected: []uintptr{5, 4, 3, 2, 1, 0},
 		},
 		{
-			name: "random",
-			slice: []uintptr{3,1,4,5,0,2},
-			expected: []uintptr{5,4,3,2,1,0},
+			name:     "random",
+			slice:    []uintptr{3, 1, 4, 5, 0, 2},
+			expected: []uintptr{5, 4, 3, 2, 1, 0},
 		},
 	}
 	for _, test := range tests {
@@ -159,24 +159,24 @@ func TestUIntPtrSlice_SortDesc(t *testing.T) {
 // Unique
 func TestUIntPtrSlice_Unique(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []uintptr
+		name     string
+		slice    []uintptr
 		expected []uintptr
 	}{
 		{
-			name: "unaffected",
-			slice: []uintptr{0,1,2,3,4,5},
-			expected: []uintptr{0,1,2,3,4,5},
+			name:     "unaffected",
+			slice:    []uintptr{0, 1, 2, 3, 4, 5},
+			expected: []uintptr{0, 1, 2, 3, 4, 5},
 		},
 		{
-			name: "one extra five",
-			slice: []uintptr{5,0,1,2,3,4,5},
-			expected: []uintptr{5,0,1,2,3,4},
+			name:     "one extra five",
+			slice:    []uintptr{5, 0, 1, 2, 3, 4, 5},
+			expected: []uintptr{5, 0, 1, 2, 3, 4},
 		},
 		{
-			name: "extras everywhere",
-			slice: []uintptr{0,0,1,0,1,2,2,2,3,0,3,4,2,3,4,4,2,1,0},
-			expected: []uintptr{0,1,2,3,4},
+			name:     "extras everywhere",
+			slice:    []uintptr{0, 0, 1, 0, 1, 2, 2, 2, 3, 0, 3, 4, 2, 3, 4, 4, 2, 1, 0},
+			expected: []uintptr{0, 1, 2, 3, 4},
 		},
 	}
 	for _, test := range tests {
@@ -192,19 +192,19 @@ func TestUIntPtrSlice_Unique(t *testing.T) {
 // Reverse
 func TestUIntPtrSlice_Reverse(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []uintptr
+		name     string
+		slice    []uintptr
 		expected []uintptr
 	}{
 		{
-			name: "even length",
-			slice: []uintptr{0,1,2,3,4,5},
-			expected: []uintptr{5,4,3,2,1,0},
+			name:     "even length",
+			slice:    []uintptr{0, 1, 2, 3, 4, 5},
+			expected: []uintptr{5, 4, 3, 2, 1, 0},
 		},
 		{
-			name: "odd length",
-			slice: []uintptr{0,1,2,3,4,5,6},
-			expected: []uintptr{6,5,4,3,2,1,0},
+			name:     "odd length",
+			slice:    []uintptr{0, 1, 2, 3, 4, 5, 6},
+			expected: []uintptr{6, 5, 4, 3, 2, 1, 0},
 		},
 	}
 	for _, test := range tests {
@@ -220,21 +220,21 @@ func TestUIntPtrSlice_Reverse(t *testing.T) {
 // Filter
 func TestUIntPtrSlice_Filter(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []uintptr
-		expected []uintptr
+		name       string
+		slice      []uintptr
+		expected   []uintptr
 		filterFunc func(uintptr) bool
 	}{
 		{
-			name: "gt 10",
-			slice: []uintptr{1, 2, 5, 11, 13, 15},
-			expected: []uintptr{11, 13, 15},
+			name:       "gt 10",
+			slice:      []uintptr{1, 2, 5, 11, 13, 15},
+			expected:   []uintptr{11, 13, 15},
 			filterFunc: func(n uintptr) bool { return n > 10 },
 		},
 		{
-			name: "mod 3",
-			slice: []uintptr{1, 2, 6, 11, 12, 15, 17},
-			expected: []uintptr{6, 12, 15},
+			name:       "mod 3",
+			slice:      []uintptr{1, 2, 6, 11, 12, 15, 17},
+			expected:   []uintptr{6, 12, 15},
 			filterFunc: func(n uintptr) bool { return n%3 == 0 },
 		},
 	}
@@ -253,20 +253,20 @@ func TestUIntPtrSlice_Each(t *testing.T) {
 
 	var rabbit uintptr
 	tests := []struct {
-		name string
-		slice []uintptr
+		name     string
+		slice    []uintptr
 		expected uintptr
 		eachFunc func(uintptr)
 	}{
 		{
-			name: "add n",
-			slice: []uintptr{1, 2, 5, 11, 13, 15},
+			name:     "add n",
+			slice:    []uintptr{1, 2, 5, 11, 13, 15},
 			expected: 47,
 			eachFunc: func(n uintptr) { rabbit += n },
 		},
 		{
-			name: "subtract n",
-			slice: []uintptr{1, 2, 6, 8, 12},
+			name:     "subtract n",
+			slice:    []uintptr{1, 2, 6, 8, 12},
 			expected: 18,
 			eachFunc: func(n uintptr) { rabbit -= n },
 		},
@@ -285,22 +285,22 @@ func TestUIntPtrSlice_Each(t *testing.T) {
 // Map
 func TestUIntPtrSlice_Map(t *testing.T) {
 	tests := []struct {
-		name string
-		slice []uintptr
+		name     string
+		slice    []uintptr
 		expected []uintptr
-		mapFunc func(uintptr) uintptr
+		mapFunc  func(uintptr) uintptr
 	}{
 		{
-			name: "add 3",
-			slice: []uintptr{1, 2, 5, 11, 13, 15},
+			name:     "add 3",
+			slice:    []uintptr{1, 2, 5, 11, 13, 15},
 			expected: []uintptr{4, 5, 8, 14, 16, 18},
-			mapFunc: func(n uintptr) uintptr { return n + 3 },
+			mapFunc:  func(n uintptr) uintptr { return n + 3 },
 		},
 		{
-			name: "set mod 2",
-			slice: []uintptr{1, 2, 6, 8, 12, 15, 17},
+			name:     "set mod 2",
+			slice:    []uintptr{1, 2, 6, 8, 12, 15, 17},
 			expected: []uintptr{1, 0, 0, 0, 0, 1, 1},
-			mapFunc: func(n uintptr) uintptr { return uintptr(n%2) },
+			mapFunc:  func(n uintptr) uintptr { return uintptr(n % 2) },
 		},
 	}
 
@@ -320,27 +320,27 @@ func TestUIntPtrSlice_Map(t *testing.T) {
 // IndexOf
 func BenchmarkUIntPtrSlice_IndexOf(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []uintptr
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenUIntPtrSlice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenUIntPtrSlice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenUIntPtrSlice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenUIntPtrSlice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenUIntPtrSlice(100000),
 		},
 	}
@@ -356,27 +356,27 @@ func BenchmarkUIntPtrSlice_IndexOf(b *testing.B) {
 // Contains
 func BenchmarkUIntPtrSlice_Contains(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []uintptr
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenUIntPtrSlice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenUIntPtrSlice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenUIntPtrSlice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenUIntPtrSlice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenUIntPtrSlice(100000),
 		},
 	}
@@ -392,27 +392,27 @@ func BenchmarkUIntPtrSlice_Contains(b *testing.B) {
 // SortAsc
 func BenchmarkUIntPtrSlice_SortAsc(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []uintptr
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenUIntPtrSlice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenUIntPtrSlice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenUIntPtrSlice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenUIntPtrSlice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenUIntPtrSlice(100000),
 		},
 	}
@@ -428,27 +428,27 @@ func BenchmarkUIntPtrSlice_SortAsc(b *testing.B) {
 // SortDesc
 func BenchmarkUIntPtrSlice_SortDesc(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []uintptr
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenUIntPtrSlice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenUIntPtrSlice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenUIntPtrSlice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenUIntPtrSlice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenUIntPtrSlice(100000),
 		},
 	}
@@ -464,27 +464,27 @@ func BenchmarkUIntPtrSlice_SortDesc(b *testing.B) {
 // Reverse
 func BenchmarkUIntPtrSlice_Reverse(b *testing.B) {
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []uintptr
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenUIntPtrSlice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenUIntPtrSlice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenUIntPtrSlice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenUIntPtrSlice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenUIntPtrSlice(100000),
 		},
 	}
@@ -503,27 +503,27 @@ func BenchmarkUIntPtrSlice_Filter(b *testing.B) {
 		return n%2 == 0
 	}
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []uintptr
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenUIntPtrSlice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenUIntPtrSlice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenUIntPtrSlice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenUIntPtrSlice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenUIntPtrSlice(100000),
 		},
 	}
@@ -543,27 +543,27 @@ func BenchmarkUIntPtrSlice_Each(b *testing.B) {
 		rabbit = n
 	}
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []uintptr
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenUIntPtrSlice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenUIntPtrSlice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenUIntPtrSlice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenUIntPtrSlice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenUIntPtrSlice(100000),
 		},
 	}
@@ -585,27 +585,27 @@ func BenchmarkUIntPtrSlice_Map(b *testing.B) {
 		return n
 	}
 	benchmarks := []struct {
-		name string
+		name  string
 		slice []uintptr
 	}{
 		{
-			name: "10 elements",
+			name:  "10 elements",
 			slice: internal.GenUIntPtrSlice(10),
 		},
 		{
-			name: "100 elements",
+			name:  "100 elements",
 			slice: internal.GenUIntPtrSlice(100),
 		},
 		{
-			name: "1000 elements",
+			name:  "1000 elements",
 			slice: internal.GenUIntPtrSlice(1000),
 		},
 		{
-			name: "10000 elements",
+			name:  "10000 elements",
 			slice: internal.GenUIntPtrSlice(10000),
 		},
 		{
-			name: "100000 elements",
+			name:  "100000 elements",
 			slice: internal.GenUIntPtrSlice(100000),
 		},
 	}
@@ -617,4 +617,5 @@ func BenchmarkUIntPtrSlice_Map(b *testing.B) {
 		})
 	}
 }
+
 // endregion
