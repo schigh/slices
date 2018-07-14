@@ -15,7 +15,6 @@ import (
 
 	"github.com/schigh/slices"
 	"github.com/schigh/slices/cmd/internal"
-	"strconv"
 )
 
 var (
@@ -24,18 +23,10 @@ var (
 	targetFile    string
 )
 
-func printErr(msg string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, "\033[31mslices: "+msg+"\n", args...)
-}
-
-func printSuccess(msg string, args ...interface{}) {
-	fmt.Fprintf(os.Stdout, "\033[32mslices: "+msg+"\n", args...)
-}
-
 func main() {
 	// make sure args are ok
 	if len(os.Args) < 2 {
-		printErr("usage: slices <struct> ...<funcs>")
+		internal.PrintErr("usage: slices <struct> ...<funcs>")
 		os.Exit(1)
 	}
 
@@ -44,27 +35,41 @@ func main() {
 	targetFile = os.Getenv("GOFILE")
 
 	if targetPackage == "" || targetFile == "" {
-		printErr("both GOPACKAGE and GOFILE environment variables are required")
+		internal.PrintErr("both GOPACKAGE and GOFILE environment variables are required")
 	}
+
 	targetStruct = os.Args[1]
+	// test for pointer
+	var pointerOverride bool
+	if targetStruct[0] == '*' {
+		pointerOverride = true
+		targetStruct = targetStruct[1:]
+	}
 
 	// assemble file path
 	pwd, pwdErr := os.Getwd()
 	if pwdErr != nil {
-		printErr("unable to get pwd: %v", pwdErr)
+		internal.PrintErr("unable to get pwd: %v", pwdErr)
 		os.Exit(1)
 	}
 	targetFile = path.Join(pwd, targetFile)
 
+	// inform user what is being created
+	var pointerStr string
+	if pointerOverride {
+		pointerStr = "pointer "
+	}
+	internal.PrintInfo("generating %sslices for struct %s in %s", pointerStr, targetStruct, path.Base(targetFile))
+
 	// make sure a struct by the provided name lives in this file
 	found, parseErr := parseFileAndLocateStruct(targetFile, targetStruct)
 	if parseErr != nil {
-		printErr("error parsing file %s: %v", targetFile, parseErr)
+		internal.PrintErr("error parsing file %s: %v", targetFile, parseErr)
 		os.Exit(1)
 	}
 
 	if !found {
-		printErr("unable to locate struct %s in file %s", targetStruct, targetFile)
+		internal.PrintErr("unable to locate struct %s in file %s", targetStruct, targetFile)
 		os.Exit(1)
 	}
 
@@ -73,7 +78,7 @@ func main() {
 	flags := strings.Join(scope, " ")
 	operations, opsErr := internal.OperationsFromFlags(flags)
 	if opsErr != nil {
-		printErr(opsErr.Error())
+		internal.PrintErr(opsErr.Error())
 		os.Exit(1)
 	}
 
@@ -81,29 +86,35 @@ func main() {
 	header := []internal.Operation{
 		{
 			Template: internal.HeadTmpl,
+			Name:     "head",
 		},
 	}
 	operations = append(header, operations...)
 
 	t := &internal.Template{
+		PO:           pointerOverride,
 		PackageName:  targetPackage,
 		GenDate:      time.Now().Format(time.RFC1123Z),
 		SourceStruct: targetStruct,
 		Operations:   operations,
 	}
 
-	fileBytes, outErr := generateOutBytes(t)
+	fileBytes, outErr := generateOutBytes(t, pointerOverride)
 	if outErr != nil {
 		os.Exit(1)
 	}
 
+	// if it's a pointer slice, create a filename that indicates a pointer
+	if pointerOverride {
+		targetStruct = fmt.Sprintf("%s_ptr", targetStruct)
+	}
 	outfile := path.Join(path.Dir(targetFile), fmt.Sprintf("%s_slices.go", strings.ToLower(targetStruct)))
 	if writeFileErr := ioutil.WriteFile(outfile, fileBytes, 0644); writeFileErr != nil {
-		printErr("error writing to file %s: %v", targetFile, writeFileErr)
+		internal.PrintErr("error writing to file %s: %v", targetFile, writeFileErr)
 		os.Exit(1)
 	}
 
-	printSuccess("wrote file %s", outfile)
+	internal.PrintSuccess("wrote file %s", outfile)
 
 }
 
@@ -132,21 +143,26 @@ func parseFileAndLocateStruct(filePath, targetStruct string) (bool, error) {
 	return found, nil
 }
 
-func generateOutBytes(tmpl *internal.Template) ([]byte, error) {
+func generateOutBytes(tmpl *internal.Template, overridePtr bool) ([]byte, error) {
 	var b []byte
 	bBuff := bytes.NewBuffer(b)
 
 	for _, op := range tmpl.Operations {
 		op.SourceStruct = tmpl.SourceStruct
+		op.SliceTypeName = tmpl.SourceStruct
+		if overridePtr {
+			op.SliceTypeName = fmt.Sprintf("%sPtr", op.SliceTypeName)
+		}
 		op.GenDate = tmpl.GenDate
 		op.PackageName = tmpl.PackageName
-		tm, tmErr := template.New(strconv.FormatInt(time.Now().UnixNano(), 10)).Parse(op.Template.String())
+		op.PO = tmpl.PO
+		tm, tmErr := template.New(op.Name + op.SliceTypeName).Parse(op.Template.String())
 		if tmErr != nil {
-			printErr("parsing template failed")
+			internal.PrintErr("parsing template failed", tmErr)
 			os.Exit(1)
 		}
 		if execErr := tm.Execute(bBuff, &op); execErr != nil {
-			printErr("executing template failed")
+			internal.PrintErr("executing template failed")
 		}
 	}
 

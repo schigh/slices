@@ -9,12 +9,17 @@
 package slices
 
 import (
-	"testing"
+	"fmt"
+	"io/ioutil"
 	"reflect"
+	"strings"
+	"testing"
+
 	"github.com/schigh/slices/internal"
 )
 
-//region TESTS
+// region TESTS
+// IndexOf
 
 func Test{{.PackageType}}_IndexOf(t *testing.T) {
 	tests := []struct {
@@ -52,6 +57,7 @@ func Test{{.PackageType}}_IndexOf(t *testing.T) {
 	}
 }
 
+// Contains
 func Test{{.PackageType}}_Contains(t *testing.T) {
 	tests := []struct {
 		name string
@@ -82,6 +88,7 @@ func Test{{.PackageType}}_Contains(t *testing.T) {
 	}
 }
 
+// SortAsc
 func Test{{.PackageType}}_SortAsc(t *testing.T) {
 	tests := []struct {
 		name string
@@ -119,6 +126,7 @@ func Test{{.PackageType}}_SortAsc(t *testing.T) {
 	}
 }
 
+// SortDesc
 func Test{{.PackageType}}_SortDesc(t *testing.T) {
 	tests := []struct {
 		name string
@@ -156,6 +164,7 @@ func Test{{.PackageType}}_SortDesc(t *testing.T) {
 	}
 }
 
+// Unique
 func Test{{.PackageType}}_Unique(t *testing.T) {
 	tests := []struct {
 		name string
@@ -188,6 +197,7 @@ func Test{{.PackageType}}_Unique(t *testing.T) {
 	}
 }
 
+// Reverse
 func Test{{.PackageType}}_Reverse(t *testing.T) {
 	tests := []struct {
 		name string
@@ -215,6 +225,7 @@ func Test{{.PackageType}}_Reverse(t *testing.T) {
 	}
 }
 
+// Filter
 func Test{{.PackageType}}_Filter(t *testing.T) {
 	tests := []struct {
 		name string
@@ -252,10 +263,95 @@ func Test{{.PackageType}}_Filter(t *testing.T) {
 	}
 }
 
-//endregion
+// Each
+func Test{{.PackageType}}_Each(t *testing.T) {
 
-//region BENCHMARKS
+	var rabbit {{.BaseType}}
+	tests := []struct {
+		name string
+		slice []{{.BaseType}}
+		expected {{.BaseType}}
+		eachFunc func({{.BaseType}})
+	}{
+		{
+			name: "concat",
+			slice: []{{.BaseType}}{"abc", "def", "ghi", "jkl", "mno", "pqr"},
+			expected: "abcdefghijklmnopqr",
+			eachFunc: func(n {{.BaseType}}) { rabbit = fmt.Sprintf("%s%s", rabbit, n) },
+		},
+		{
+			name: "prepend",
+			slice: []{{.BaseType}}{"aa", "bb", "cc", "dd", "ee"},
+			expected: "eeddccbbaaabcdefghijklmnopqr",
+			eachFunc: func(n {{.BaseType}}) { rabbit = fmt.Sprintf("%s%s", n, rabbit) },
+		},
+	}
 
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			{{.PackageType}}(test.slice).Each(test.eachFunc)
+			if test.expected != rabbit {
+				t.Errorf("expected %s, got %s", test.expected, rabbit)
+			}
+		})
+	}
+}
+
+// Map
+func Test{{.PackageType}}_Map(t *testing.T) {
+	tests := []struct {
+		name string
+		slice []{{.BaseType}}
+		expected []{{.BaseType}}
+		mapFunc func({{.BaseType}}) {{.BaseType}}
+	}{
+		{
+			name: "replace vowels",
+			slice: []{{.BaseType}}{"cats", "dogs", "fish", "birds", "lizards", "mice"},
+			expected: []{{.BaseType}}{"cXts", "dXgs", "fXsh", "bXrds", "lXzXrds", "mXcX"},
+			mapFunc: func(n {{.BaseType}}) {{.BaseType}} {
+				if strings.ContainsAny(n, "aeiou") {
+					// hacky!
+					n = strings.Replace(
+							strings.Replace(
+								strings.Replace(
+									strings.Replace(
+										strings.Replace(n, "a", "X", -1),
+										"e", "X", -1,
+									),
+									"i", "X", -1,
+								),
+								"o", "X", -1,
+							),
+							"u", "X", -1,
+						)
+				}
+				return n
+			},
+		},
+		{
+			name: "lowercase",
+			slice: []{{.BaseType}}{"AbCdE", "aaa", "DDD", "ABx", "12AS"},
+			expected: []{{.BaseType}}{"abcde", "aaa", "ddd", "abx", "12as"},
+			mapFunc: strings.ToLower,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			{{.PackageType}}(test.slice).Map(test.mapFunc)
+			if !reflect.DeepEqual(test.expected, test.slice) {
+				t.Errorf("expected %v, got %v", test.expected, test.slice)
+			}
+		})
+	}
+}
+
+
+// endregion
+
+// region BENCHMARKS
+// IndexOf
 func Benchmark{{.PackageType}}_IndexOf(b *testing.B) {
 	benchmarks := []struct {
 		name string
@@ -291,6 +387,7 @@ func Benchmark{{.PackageType}}_IndexOf(b *testing.B) {
 	}
 }
 
+// Contains
 func Benchmark{{.PackageType}}_Contains(b *testing.B) {
 	benchmarks := []struct {
 		name string
@@ -326,6 +423,7 @@ func Benchmark{{.PackageType}}_Contains(b *testing.B) {
 	}
 }
 
+// SortAsc
 func Benchmark{{.PackageType}}_SortAsc(b *testing.B) {
 	benchmarks := []struct {
 		name string
@@ -361,6 +459,7 @@ func Benchmark{{.PackageType}}_SortAsc(b *testing.B) {
 	}
 }
 
+// SortDesc
 func Benchmark{{.PackageType}}_SortDesc(b *testing.B) {
 	benchmarks := []struct {
 		name string
@@ -396,6 +495,7 @@ func Benchmark{{.PackageType}}_SortDesc(b *testing.B) {
 	}
 }
 
+// Reverse
 func Benchmark{{.PackageType}}_Reverse(b *testing.B) {
 	benchmarks := []struct {
 		name string
@@ -431,6 +531,7 @@ func Benchmark{{.PackageType}}_Reverse(b *testing.B) {
 	}
 }
 
+// Filter
 func Benchmark{{.PackageType}}_Filter(b *testing.B) {
 	benchFunc := func(s {{.BaseType}}) bool {
 		if len(s) == 0 { return false }
@@ -469,4 +570,83 @@ func Benchmark{{.PackageType}}_Filter(b *testing.B) {
 		})
 	}
 }
-//endregion
+
+// Each
+func Benchmark{{.PackageType}}_Each(b *testing.B) {
+	var rabbit {{.BaseType}}
+	benchFunc := func(n {{.BaseType}}) {
+		rabbit = n
+	}
+	benchmarks := []struct {
+		name string
+		slice []{{.BaseType}}
+	}{
+		{
+			name: "10 elements",
+			slice: internal.Gen{{.PackageType}}(10),
+		},
+		{
+			name: "100 elements",
+			slice: internal.Gen{{.PackageType}}(100),
+		},
+		{
+			name: "1000 elements",
+			slice: internal.Gen{{.PackageType}}(1000),
+		},
+		{
+			name: "10000 elements",
+			slice: internal.Gen{{.PackageType}}(10000),
+		},
+		{
+			name: "100000 elements",
+			slice: internal.Gen{{.PackageType}}(100000),
+		},
+	}
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				{{.PackageType}}(bm.slice).Each(benchFunc)
+			}
+		})
+	}
+
+	fmt.Fprintf(ioutil.Discard, "%v", rabbit)
+}
+
+// Map
+func Benchmark{{.PackageType}}_Map(b *testing.B) {
+	benchFunc := strings.ToLower
+	benchmarks := []struct {
+		name string
+		slice []{{.BaseType}}
+	}{
+		{
+			name: "10 elements",
+			slice: internal.Gen{{.PackageType}}(10),
+		},
+		{
+			name: "100 elements",
+			slice: internal.Gen{{.PackageType}}(100),
+		},
+		{
+			name: "1000 elements",
+			slice: internal.Gen{{.PackageType}}(1000),
+		},
+		{
+			name: "10000 elements",
+			slice: internal.Gen{{.PackageType}}(10000),
+		},
+		{
+			name: "100000 elements",
+			slice: internal.Gen{{.PackageType}}(100000),
+		},
+	}
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				{{.PackageType}}(bm.slice).Map(benchFunc)
+			}
+		})
+	}
+}
+// endregion

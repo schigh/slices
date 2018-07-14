@@ -27,7 +27,7 @@ func (slice Int16Slice) Contains(needle int16) bool {
 	return slice.IndexOf(needle) != NotInSlice
 }
 
-// SortAsc will sort an []int16 in ascending order
+// SortAsc will sort the slice in ascending order
 func (slice Int16Slice) SortAsc() Int16Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
@@ -35,7 +35,7 @@ func (slice Int16Slice) SortAsc() Int16Slice {
 	return slice
 }
 
-// SortDesc will sort an []int16 in descending order
+// SortDesc will sort the slice in descending order
 func (slice Int16Slice) SortDesc() Int16Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[j] < slice[i]
@@ -54,28 +54,44 @@ func (slice Int16Slice) Reverse() Int16Slice {
 	return slice
 }
 
-// Unique filters out duplicate values
+// Unique filters out duplicate int16 values
 func (slice Int16Slice) Unique() Int16Slice {
 	u := make([]int16, 0, len(slice))
 	m := make(map[int16]bool)
 
-	for _, i := range slice {
-		if _, ok := m[i]; !ok {
-			m[i] = true
-			u = append(u, i)
+	for _, v := range slice {
+		if _, ok := m[v]; !ok {
+			m[v] = true
+			u = append(u, v)
 		}
 	}
 
 	return Int16Slice(u)
 }
 
+// Filter will return all int16 values that evaluate true in the user-supplied function
 func (slice Int16Slice) Filter(f func(int16) bool) Int16Slice {
 	out := make([]int16, 0, len(slice))
-	for _, i := range slice {
-		if f(i) {
-			out = append(out, i)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
 	return Int16Slice(out)
+}
+
+// Each will apply a function to each int16 in the slice.
+// This should be used with data outside of the slice as it doesn't mutate it
+func (slice Int16Slice) Each(f func(int16)) {
+	for _, v := range slice {
+		f(v)
+	}
+}
+
+// Map will apply a function to each int16 in the slice and replace the previous value
+func (slice Int16Slice) Map(f func(int16) int16) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
 }

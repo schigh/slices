@@ -27,7 +27,7 @@ func (slice Int32Slice) Contains(needle int32) bool {
 	return slice.IndexOf(needle) != NotInSlice
 }
 
-// SortAsc will sort an []int32 in ascending order
+// SortAsc will sort the slice in ascending order
 func (slice Int32Slice) SortAsc() Int32Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
@@ -35,7 +35,7 @@ func (slice Int32Slice) SortAsc() Int32Slice {
 	return slice
 }
 
-// SortDesc will sort an []int32 in descending order
+// SortDesc will sort the slice in descending order
 func (slice Int32Slice) SortDesc() Int32Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[j] < slice[i]
@@ -54,28 +54,44 @@ func (slice Int32Slice) Reverse() Int32Slice {
 	return slice
 }
 
-// Unique filters out duplicate values
+// Unique filters out duplicate int32 values
 func (slice Int32Slice) Unique() Int32Slice {
 	u := make([]int32, 0, len(slice))
 	m := make(map[int32]bool)
 
-	for _, i := range slice {
-		if _, ok := m[i]; !ok {
-			m[i] = true
-			u = append(u, i)
+	for _, v := range slice {
+		if _, ok := m[v]; !ok {
+			m[v] = true
+			u = append(u, v)
 		}
 	}
 
 	return Int32Slice(u)
 }
 
+// Filter will return all int32 values that evaluate true in the user-supplied function
 func (slice Int32Slice) Filter(f func(int32) bool) Int32Slice {
 	out := make([]int32, 0, len(slice))
-	for _, i := range slice {
-		if f(i) {
-			out = append(out, i)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
 	return Int32Slice(out)
+}
+
+// Each will apply a function to each int32 in the slice.
+// This should be used with data outside of the slice as it doesn't mutate it
+func (slice Int32Slice) Each(f func(int32)) {
+	for _, v := range slice {
+		f(v)
+	}
+}
+
+// Map will apply a function to each int32 in the slice and replace the previous value
+func (slice Int32Slice) Map(f func(int32) int32) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
 }

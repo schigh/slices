@@ -27,7 +27,7 @@ func (slice Int8Slice) Contains(needle int8) bool {
 	return slice.IndexOf(needle) != NotInSlice
 }
 
-// SortAsc will sort an []int8 in ascending order
+// SortAsc will sort the slice in ascending order
 func (slice Int8Slice) SortAsc() Int8Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
@@ -35,7 +35,7 @@ func (slice Int8Slice) SortAsc() Int8Slice {
 	return slice
 }
 
-// SortDesc will sort an []int8 in descending order
+// SortDesc will sort the slice in descending order
 func (slice Int8Slice) SortDesc() Int8Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[j] < slice[i]
@@ -54,28 +54,44 @@ func (slice Int8Slice) Reverse() Int8Slice {
 	return slice
 }
 
-// Unique filters out duplicate values
+// Unique filters out duplicate int8 values
 func (slice Int8Slice) Unique() Int8Slice {
 	u := make([]int8, 0, len(slice))
 	m := make(map[int8]bool)
 
-	for _, i := range slice {
-		if _, ok := m[i]; !ok {
-			m[i] = true
-			u = append(u, i)
+	for _, v := range slice {
+		if _, ok := m[v]; !ok {
+			m[v] = true
+			u = append(u, v)
 		}
 	}
 
 	return Int8Slice(u)
 }
 
+// Filter will return all int8 values that evaluate true in the user-supplied function
 func (slice Int8Slice) Filter(f func(int8) bool) Int8Slice {
 	out := make([]int8, 0, len(slice))
-	for _, i := range slice {
-		if f(i) {
-			out = append(out, i)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
 	return Int8Slice(out)
+}
+
+// Each will apply a function to each int8 in the slice.
+// This should be used with data outside of the slice as it doesn't mutate it
+func (slice Int8Slice) Each(f func(int8)) {
+	for _, v := range slice {
+		f(v)
+	}
+}
+
+// Map will apply a function to each int8 in the slice and replace the previous value
+func (slice Int8Slice) Map(f func(int8) int8) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
 }

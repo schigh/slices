@@ -9,10 +9,14 @@
 package slices
 
 import (
-	"testing"
+	"fmt"
+	"io/ioutil"
 	"reflect"
+	"testing"
 )
 
+// region TESTS
+// IndexOf
 func Test{{.PackageType}}_IndexOf(t *testing.T) {
 	tests := []struct {
 		name string
@@ -49,6 +53,7 @@ func Test{{.PackageType}}_IndexOf(t *testing.T) {
 	}
 }
 
+// Contains
 func Test{{.PackageType}}_Contains(t *testing.T) {
 	tests := []struct {
 		name string
@@ -79,6 +84,7 @@ func Test{{.PackageType}}_Contains(t *testing.T) {
 	}
 }
 
+// SortAsc
 func Test{{.PackageType}}_SortAsc(t *testing.T) {
 	tests := []struct {
 		name string
@@ -116,6 +122,7 @@ func Test{{.PackageType}}_SortAsc(t *testing.T) {
 	}
 }
 
+// SortDesc
 func Test{{.PackageType}}_SortDesc(t *testing.T) {
 	tests := []struct {
 		name string
@@ -153,6 +160,7 @@ func Test{{.PackageType}}_SortDesc(t *testing.T) {
 	}
 }
 
+// Unique
 func Test{{.PackageType}}_Unique(t *testing.T) {
 	tests := []struct {
 		name string
@@ -185,6 +193,7 @@ func Test{{.PackageType}}_Unique(t *testing.T) {
 	}
 }
 
+// Reverse
 func Test{{.PackageType}}_Reverse(t *testing.T) {
 	tests := []struct {
 		name string
@@ -212,6 +221,7 @@ func Test{{.PackageType}}_Reverse(t *testing.T) {
 	}
 }
 
+// Filter
 func Test{{.PackageType}}_Filter(t *testing.T) {
 	tests := []struct {
 		name string
@@ -241,3 +251,73 @@ func Test{{.PackageType}}_Filter(t *testing.T) {
 		})
 	}
 }
+
+// Each
+func Test{{.PackageType}}_Each(t *testing.T) {
+
+	var rabbit {{.BaseType}}
+	tests := []struct {
+		name string
+		slice []{{.BaseType}}
+		expected {{.BaseType}}
+		eachFunc func({{.BaseType}})
+	}{
+		{
+			name: "add n",
+			slice: []{{.BaseType}}{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
+			expected: 49.5,
+			eachFunc: func(n {{.BaseType}}) { rabbit += n },
+		},
+		{
+			name: "subtract n",
+			slice: []{{.BaseType}}{1.5, 2.25, 6.75, 8.5, 12.25},
+			expected: 18.25,
+			eachFunc: func(n {{.BaseType}}) { rabbit -= n },
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			{{.PackageType}}(test.slice).Each(test.eachFunc)
+			if test.expected != rabbit {
+				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			}
+		})
+	}
+
+	fmt.Fprintf(ioutil.Discard, "%v", rabbit)
+}
+
+// Map
+func Test{{.PackageType}}_Map(t *testing.T) {
+	tests := []struct {
+		name string
+		slice []{{.BaseType}}
+		expected []{{.BaseType}}
+		mapFunc func({{.BaseType}}) {{.BaseType}}
+	}{
+		{
+			name: "add 3.5",
+			slice: []{{.BaseType}}{1.23, 2.34, 5.67, 11.5, 13.25, 15.25},
+			expected: []{{.BaseType}}{4.73, 5.84, 9.17, 15, 16.75, 18.75},
+			mapFunc: func(n {{.BaseType}}) {{.BaseType}} { return n + 3.5 },
+		},
+		{
+			name: "multiply by 2",
+			slice: []{{.BaseType}}{1.5, 2.5, 6.5, 8.5, 12.5, 15.5, 17.5},
+			expected: []{{.BaseType}}{3.0, 5.0, 13.0, 17.0, 25.0, 31.0, 35.0},
+			mapFunc: func(n {{.BaseType}}) {{.BaseType}} { return n*2 },
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			{{.PackageType}}(test.slice).Map(test.mapFunc)
+			if !reflect.DeepEqual(test.expected, test.slice) {
+				t.Errorf("expected %v, got %v", test.expected, test.slice)
+			}
+		})
+	}
+}
+
+//endregion

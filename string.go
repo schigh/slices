@@ -27,7 +27,7 @@ func (slice StringSlice) Contains(needle string) bool {
 	return slice.IndexOf(needle) != NotInSlice
 }
 
-// SortAsc will sort an []string in ascending order
+// SortAsc will sort the slice in ascending order
 func (slice StringSlice) SortAsc() StringSlice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
@@ -35,7 +35,7 @@ func (slice StringSlice) SortAsc() StringSlice {
 	return slice
 }
 
-// SortDesc will sort an []string in descending order
+// SortDesc will sort the slice in descending order
 func (slice StringSlice) SortDesc() StringSlice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[j] < slice[i]
@@ -54,28 +54,44 @@ func (slice StringSlice) Reverse() StringSlice {
 	return slice
 }
 
-// Unique filters out duplicate values
+// Unique filters out duplicate string values
 func (slice StringSlice) Unique() StringSlice {
 	u := make([]string, 0, len(slice))
 	m := make(map[string]bool)
 
-	for _, i := range slice {
-		if _, ok := m[i]; !ok {
-			m[i] = true
-			u = append(u, i)
+	for _, v := range slice {
+		if _, ok := m[v]; !ok {
+			m[v] = true
+			u = append(u, v)
 		}
 	}
 
 	return StringSlice(u)
 }
 
+// Filter will return all string values that evaluate true in the user-supplied function
 func (slice StringSlice) Filter(f func(string) bool) StringSlice {
 	out := make([]string, 0, len(slice))
-	for _, i := range slice {
-		if f(i) {
-			out = append(out, i)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
 	return StringSlice(out)
+}
+
+// Each will apply a function to each string in the slice.
+// This should be used with data outside of the slice as it doesn't mutate it
+func (slice StringSlice) Each(f func(string)) {
+	for _, v := range slice {
+		f(v)
+	}
+}
+
+// Map will apply a function to each string in the slice and replace the previous value
+func (slice StringSlice) Map(f func(string) string) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
 }

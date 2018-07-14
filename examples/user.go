@@ -1,7 +1,7 @@
 package examples
 
-//go:generate slices User filter(byvalue)
-//go:generate slices Account all
+//go:generate slices User filter(byvalue) map(byvalue)
+//go:generate slices Account all(byvalue)
 
 // User is a user
 type User struct {
@@ -11,5 +11,6 @@ type User struct {
 
 // Account is an account
 type Account struct {
-	Name string
+	Name  string
+	Value float64
 }

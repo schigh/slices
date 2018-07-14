@@ -27,7 +27,7 @@ func (slice IntSlice) Contains(needle int) bool {
 	return slice.IndexOf(needle) != NotInSlice
 }
 
-// SortAsc will sort an []int in ascending order
+// SortAsc will sort the slice in ascending order
 func (slice IntSlice) SortAsc() IntSlice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
@@ -35,7 +35,7 @@ func (slice IntSlice) SortAsc() IntSlice {
 	return slice
 }
 
-// SortDesc will sort an []int in descending order
+// SortDesc will sort the slice in descending order
 func (slice IntSlice) SortDesc() IntSlice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[j] < slice[i]
@@ -54,28 +54,44 @@ func (slice IntSlice) Reverse() IntSlice {
 	return slice
 }
 
-// Unique filters out duplicate values
+// Unique filters out duplicate int values
 func (slice IntSlice) Unique() IntSlice {
 	u := make([]int, 0, len(slice))
 	m := make(map[int]bool)
 
-	for _, i := range slice {
-		if _, ok := m[i]; !ok {
-			m[i] = true
-			u = append(u, i)
+	for _, v := range slice {
+		if _, ok := m[v]; !ok {
+			m[v] = true
+			u = append(u, v)
 		}
 	}
 
 	return IntSlice(u)
 }
 
+// Filter will return all int values that evaluate true in the user-supplied function
 func (slice IntSlice) Filter(f func(int) bool) IntSlice {
 	out := make([]int, 0, len(slice))
-	for _, i := range slice {
-		if f(i) {
-			out = append(out, i)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
 	return IntSlice(out)
+}
+
+// Each will apply a function to each int in the slice.
+// This should be used with data outside of the slice as it doesn't mutate it
+func (slice IntSlice) Each(f func(int)) {
+	for _, v := range slice {
+		f(v)
+	}
+}
+
+// Map will apply a function to each int in the slice and replace the previous value
+func (slice IntSlice) Map(f func(int) int) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
 }

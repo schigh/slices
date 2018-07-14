@@ -34,7 +34,7 @@ func (slice {{.PackageType}}) Contains(needle {{.BaseType}}) bool {
 	return slice.IndexOf(needle) != NotInSlice
 }
 
-// SortAsc will sort an []{{.BaseType}} in ascending order
+// SortAsc will sort the slice in ascending order
 func (slice {{.PackageType}}) SortAsc() {{.PackageType}} {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
@@ -42,7 +42,7 @@ func (slice {{.PackageType}}) SortAsc() {{.PackageType}} {
 	return slice
 }
 
-// SortDesc will sort an []{{.BaseType}} in descending order
+// SortDesc will sort the slice in descending order
 func (slice {{.PackageType}}) SortDesc() {{.PackageType}} {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[j] < slice[i]
@@ -61,28 +61,44 @@ func (slice {{.PackageType}}) Reverse() {{.PackageType}} {
 	return slice
 }
 
-// Unique filters out duplicate values
+// Unique filters out duplicate {{.BaseType}} values
 func (slice {{.PackageType}}) Unique() {{.PackageType}} {
 	u := make([]{{.BaseType}}, 0, len(slice))
 	m := make(map[{{.BaseType}}]bool)
 
-	for _, i := range slice {
-		if _, ok := m[i]; !ok {
-			m[i] = true
-			u = append(u, i)
+	for _, v := range slice {
+		if _, ok := m[v]; !ok {
+			m[v] = true
+			u = append(u, v)
 		}
 	}
 
 	return {{.PackageType}}(u)
 }
 
+// Filter will return all {{.BaseType}} values that evaluate true in the user-supplied function
 func (slice {{.PackageType}}) Filter(f func({{.BaseType}}) bool) {{.PackageType}} {
 	out := make([]{{.BaseType}}, 0, len(slice))
-	for _, i := range slice {
-		if f(i) {
-			out = append(out, i)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
 	return {{.PackageType}}(out)
+}
+
+// Each will apply a function to each {{.BaseType}} in the slice.
+// This should be used with data outside of the slice as it doesn't mutate it
+func (slice {{.PackageType}}) Each(f func({{.BaseType}})) {
+	for _, v := range slice {
+		f(v)
+	}
+}
+
+// Map will apply a function to each {{.BaseType}} in the slice and replace the previous value
+func (slice {{.PackageType}}) Map(f func({{.BaseType}}) {{.BaseType}}) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
 }

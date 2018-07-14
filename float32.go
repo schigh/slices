@@ -27,7 +27,7 @@ func (slice Float32Slice) Contains(needle float32) bool {
 	return slice.IndexOf(needle) != NotInSlice
 }
 
-// SortAsc will sort an []float32 in ascending order
+// SortAsc will sort the slice in ascending order
 func (slice Float32Slice) SortAsc() Float32Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
@@ -35,7 +35,7 @@ func (slice Float32Slice) SortAsc() Float32Slice {
 	return slice
 }
 
-// SortDesc will sort an []float32 in descending order
+// SortDesc will sort the slice in descending order
 func (slice Float32Slice) SortDesc() Float32Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[j] < slice[i]
@@ -54,28 +54,44 @@ func (slice Float32Slice) Reverse() Float32Slice {
 	return slice
 }
 
-// Unique filters out duplicate values
+// Unique filters out duplicate float32 values
 func (slice Float32Slice) Unique() Float32Slice {
 	u := make([]float32, 0, len(slice))
 	m := make(map[float32]bool)
 
-	for _, i := range slice {
-		if _, ok := m[i]; !ok {
-			m[i] = true
-			u = append(u, i)
+	for _, v := range slice {
+		if _, ok := m[v]; !ok {
+			m[v] = true
+			u = append(u, v)
 		}
 	}
 
 	return Float32Slice(u)
 }
 
+// Filter will return all float32 values that evaluate true in the user-supplied function
 func (slice Float32Slice) Filter(f func(float32) bool) Float32Slice {
 	out := make([]float32, 0, len(slice))
-	for _, i := range slice {
-		if f(i) {
-			out = append(out, i)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
 	return Float32Slice(out)
+}
+
+// Each will apply a function to each float32 in the slice.
+// This should be used with data outside of the slice as it doesn't mutate it
+func (slice Float32Slice) Each(f func(float32)) {
+	for _, v := range slice {
+		f(v)
+	}
+}
+
+// Map will apply a function to each float32 in the slice and replace the previous value
+func (slice Float32Slice) Map(f func(float32) float32) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
 }

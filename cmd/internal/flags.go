@@ -26,18 +26,21 @@ func OperationsFromFlags(flags string) ([]Operation, error) {
 	matches := re.FindAllSubmatch([]byte(flags), -1)
 	for _, m := range matches {
 		operation := Operation{}
-		operation.ByValue = len(m[4]) > 0
+		operation.ByRef = len(m[4]) <= 0
 		operation.Copy = len(m[5]) > 0
 		op := string(m[1])
 		switch op {
 		case allOperation:
-			return allOps(operation.ByValue, operation.Copy), nil
+			return allOps(operation.ByRef, operation.Copy), nil
 		case mapOperation:
 			operation.Template = MapTmpl
+			operation.Name = "map"
 		case filterOperation:
 			operation.Template = FilterTmpl
+			operation.Name = "filter"
 		case eachOperation:
 			operation.Template = EachTmpl
+			operation.Name = "each"
 		default:
 			return ops, errors.New(fmt.Sprintf("unknown operation: '%s', op"))
 		}
@@ -48,22 +51,25 @@ func OperationsFromFlags(flags string) ([]Operation, error) {
 	return ops, nil
 }
 
-func allOps(bv, cp bool) []Operation {
+func allOps(br, cp bool) []Operation {
 	return []Operation{
 		{
 			Template: MapTmpl,
-			ByValue:  bv,
+			ByRef:    br,
 			Copy:     cp,
+			Name:     "map",
 		},
 		{
 			Template: FilterTmpl,
-			ByValue:  bv,
+			ByRef:    br,
 			Copy:     cp,
+			Name:     "filter",
 		},
 		{
 			Template: EachTmpl,
-			ByValue:  bv,
+			ByRef:    br,
 			Copy:     cp,
+			Name:     "each",
 		},
 	}
 }

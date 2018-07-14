@@ -27,7 +27,7 @@ func (slice UInt8Slice) Contains(needle uint8) bool {
 	return slice.IndexOf(needle) != NotInSlice
 }
 
-// SortAsc will sort an []uint8 in ascending order
+// SortAsc will sort the slice in ascending order
 func (slice UInt8Slice) SortAsc() UInt8Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
@@ -35,7 +35,7 @@ func (slice UInt8Slice) SortAsc() UInt8Slice {
 	return slice
 }
 
-// SortDesc will sort an []uint8 in descending order
+// SortDesc will sort the slice in descending order
 func (slice UInt8Slice) SortDesc() UInt8Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[j] < slice[i]
@@ -54,28 +54,44 @@ func (slice UInt8Slice) Reverse() UInt8Slice {
 	return slice
 }
 
-// Unique filters out duplicate values
+// Unique filters out duplicate uint8 values
 func (slice UInt8Slice) Unique() UInt8Slice {
 	u := make([]uint8, 0, len(slice))
 	m := make(map[uint8]bool)
 
-	for _, i := range slice {
-		if _, ok := m[i]; !ok {
-			m[i] = true
-			u = append(u, i)
+	for _, v := range slice {
+		if _, ok := m[v]; !ok {
+			m[v] = true
+			u = append(u, v)
 		}
 	}
 
 	return UInt8Slice(u)
 }
 
+// Filter will return all uint8 values that evaluate true in the user-supplied function
 func (slice UInt8Slice) Filter(f func(uint8) bool) UInt8Slice {
 	out := make([]uint8, 0, len(slice))
-	for _, i := range slice {
-		if f(i) {
-			out = append(out, i)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
 	return UInt8Slice(out)
+}
+
+// Each will apply a function to each uint8 in the slice.
+// This should be used with data outside of the slice as it doesn't mutate it
+func (slice UInt8Slice) Each(f func(uint8)) {
+	for _, v := range slice {
+		f(v)
+	}
+}
+
+// Map will apply a function to each uint8 in the slice and replace the previous value
+func (slice UInt8Slice) Map(f func(uint8) uint8) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
 }

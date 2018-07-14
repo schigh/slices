@@ -27,7 +27,7 @@ func (slice Int64Slice) Contains(needle int64) bool {
 	return slice.IndexOf(needle) != NotInSlice
 }
 
-// SortAsc will sort an []int64 in ascending order
+// SortAsc will sort the slice in ascending order
 func (slice Int64Slice) SortAsc() Int64Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
@@ -35,7 +35,7 @@ func (slice Int64Slice) SortAsc() Int64Slice {
 	return slice
 }
 
-// SortDesc will sort an []int64 in descending order
+// SortDesc will sort the slice in descending order
 func (slice Int64Slice) SortDesc() Int64Slice {
 	sort.SliceStable(slice, func(i, j int) bool {
 		return slice[j] < slice[i]
@@ -54,28 +54,44 @@ func (slice Int64Slice) Reverse() Int64Slice {
 	return slice
 }
 
-// Unique filters out duplicate values
+// Unique filters out duplicate int64 values
 func (slice Int64Slice) Unique() Int64Slice {
 	u := make([]int64, 0, len(slice))
 	m := make(map[int64]bool)
 
-	for _, i := range slice {
-		if _, ok := m[i]; !ok {
-			m[i] = true
-			u = append(u, i)
+	for _, v := range slice {
+		if _, ok := m[v]; !ok {
+			m[v] = true
+			u = append(u, v)
 		}
 	}
 
 	return Int64Slice(u)
 }
 
+// Filter will return all int64 values that evaluate true in the user-supplied function
 func (slice Int64Slice) Filter(f func(int64) bool) Int64Slice {
 	out := make([]int64, 0, len(slice))
-	for _, i := range slice {
-		if f(i) {
-			out = append(out, i)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
 	return Int64Slice(out)
+}
+
+// Each will apply a function to each int64 in the slice.
+// This should be used with data outside of the slice as it doesn't mutate it
+func (slice Int64Slice) Each(f func(int64)) {
+	for _, v := range slice {
+		f(v)
+	}
+}
+
+// Map will apply a function to each int64 in the slice and replace the previous value
+func (slice Int64Slice) Map(f func(int64) int64) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
 }
