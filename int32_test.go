@@ -14,27 +14,27 @@ import (
 // IndexOf
 func TestInt32Slice_IndexOf(t *testing.T) {
 	tests := []struct {
-		name     string
-		slice    []int32
-		needle   int32
+		name string
+		slice []int32
+		needle int32
 		expected int
 	}{
 		{
-			name:     "only item",
-			slice:    []int32{1},
-			needle:   1,
+			name: "only item",
+			slice: []int32{1},
+			needle: 1,
 			expected: 0,
 		},
 		{
-			name:     "at index 1",
-			slice:    []int32{0, 1, 1},
-			needle:   1,
+			name: "at index 1",
+			slice: []int32{0,1,1},
+			needle: 1,
 			expected: 1,
 		},
 		{
-			name:     "missing",
-			slice:    []int32{1, 2, 3, 4},
-			needle:   5,
+			name: "missing",
+			slice: []int32{1,2,3,4},
+			needle: 5,
 			expected: NotInSlice,
 		},
 	}
@@ -51,21 +51,21 @@ func TestInt32Slice_IndexOf(t *testing.T) {
 // Contains
 func TestInt32Slice_Contains(t *testing.T) {
 	tests := []struct {
-		name     string
-		slice    []int32
-		needle   int32
+		name string
+		slice []int32
+		needle int32
 		expected bool
 	}{
 		{
-			name:     "present",
-			slice:    []int32{1, 2, 3, 4},
-			needle:   4,
+			name: "present",
+			slice: []int32{1,2,3,4},
+			needle: 4,
 			expected: true,
 		},
 		{
-			name:     "not present",
-			slice:    []int32{1, 2, 3, 4},
-			needle:   5,
+			name: "not present",
+			slice: []int32{1,2,3,4},
+			needle: 5,
 			expected: false,
 		},
 	}
@@ -82,29 +82,29 @@ func TestInt32Slice_Contains(t *testing.T) {
 // SortAsc
 func TestInt32Slice_SortAsc(t *testing.T) {
 	tests := []struct {
-		name     string
-		slice    []int32
+		name string
+		slice []int32
 		expected []int32
 	}{
 		{
-			name:     "empty",
-			slice:    []int32{},
+			name: "empty",
+			slice: []int32{},
 			expected: []int32{},
 		},
 		{
-			name:     "already sorted",
-			slice:    []int32{0, 1, 2, 3, 4, 5},
-			expected: []int32{0, 1, 2, 3, 4, 5},
+			name: "already sorted",
+			slice: []int32{0,1,2,3,4,5},
+			expected: []int32{0,1,2,3,4,5},
 		},
 		{
-			name:     "reversed",
-			slice:    []int32{5, 4, 3, 2, 1, 0},
-			expected: []int32{0, 1, 2, 3, 4, 5},
+			name: "reversed",
+			slice: []int32{5,4,3,2,1,0},
+			expected: []int32{0,1,2,3,4,5},
 		},
 		{
-			name:     "random",
-			slice:    []int32{3, 1, 4, 5, 0, 2},
-			expected: []int32{0, 1, 2, 3, 4, 5},
+			name: "random",
+			slice: []int32{3,1,4,5,0,2},
+			expected: []int32{0,1,2,3,4,5},
 		},
 	}
 	for _, test := range tests {
@@ -120,29 +120,29 @@ func TestInt32Slice_SortAsc(t *testing.T) {
 // SortDesc
 func TestInt32Slice_SortDesc(t *testing.T) {
 	tests := []struct {
-		name     string
-		slice    []int32
+		name string
+		slice []int32
 		expected []int32
 	}{
 		{
-			name:     "empty",
-			slice:    []int32{},
+			name: "empty",
+			slice: []int32{},
 			expected: []int32{},
 		},
 		{
-			name:     "already sorted",
-			slice:    []int32{5, 4, 3, 2, 1, 0},
-			expected: []int32{5, 4, 3, 2, 1, 0},
+			name: "already sorted",
+			slice: []int32{5,4,3,2,1,0},
+			expected: []int32{5,4,3,2,1,0},
 		},
 		{
-			name:     "reversed",
-			slice:    []int32{0, 1, 2, 3, 4, 5},
-			expected: []int32{5, 4, 3, 2, 1, 0},
+			name: "reversed",
+			slice: []int32{0,1,2,3,4,5},
+			expected: []int32{5,4,3,2,1,0},
 		},
 		{
-			name:     "random",
-			slice:    []int32{3, 1, 4, 5, 0, 2},
-			expected: []int32{5, 4, 3, 2, 1, 0},
+			name: "random",
+			slice: []int32{3,1,4,5,0,2},
+			expected: []int32{5,4,3,2,1,0},
 		},
 	}
 	for _, test := range tests {
@@ -158,24 +158,24 @@ func TestInt32Slice_SortDesc(t *testing.T) {
 // Unique
 func TestInt32Slice_Unique(t *testing.T) {
 	tests := []struct {
-		name     string
-		slice    []int32
+		name string
+		slice []int32
 		expected []int32
 	}{
 		{
-			name:     "unaffected",
-			slice:    []int32{0, 1, 2, 3, 4, 5},
-			expected: []int32{0, 1, 2, 3, 4, 5},
+			name: "unaffected",
+			slice: []int32{0,1,2,3,4,5},
+			expected: []int32{0,1,2,3,4,5},
 		},
 		{
-			name:     "one extra five",
-			slice:    []int32{5, 0, 1, 2, 3, 4, 5},
-			expected: []int32{5, 0, 1, 2, 3, 4},
+			name: "one extra five",
+			slice: []int32{5,0,1,2,3,4,5},
+			expected: []int32{5,0,1,2,3,4},
 		},
 		{
-			name:     "extras everywhere",
-			slice:    []int32{0, 0, 1, 0, 1, 2, 2, 2, 3, 0, 3, 4, 2, 3, 4, 4, 2, 1, 0},
-			expected: []int32{0, 1, 2, 3, 4},
+			name: "extras everywhere",
+			slice: []int32{0,0,1,0,1,2,2,2,3,0,3,4,2,3,4,4,2,1,0},
+			expected: []int32{0,1,2,3,4},
 		},
 	}
 	for _, test := range tests {
@@ -191,19 +191,19 @@ func TestInt32Slice_Unique(t *testing.T) {
 // Reverse
 func TestInt32Slice_Reverse(t *testing.T) {
 	tests := []struct {
-		name     string
-		slice    []int32
+		name string
+		slice []int32
 		expected []int32
 	}{
 		{
-			name:     "even length",
-			slice:    []int32{0, 1, 2, 3, 4, 5},
-			expected: []int32{5, 4, 3, 2, 1, 0},
+			name: "even length",
+			slice: []int32{0,1,2,3,4,5},
+			expected: []int32{5,4,3,2,1,0},
 		},
 		{
-			name:     "odd length",
-			slice:    []int32{0, 1, 2, 3, 4, 5, 6},
-			expected: []int32{6, 5, 4, 3, 2, 1, 0},
+			name: "odd length",
+			slice: []int32{0,1,2,3,4,5,6},
+			expected: []int32{6,5,4,3,2,1,0},
 		},
 	}
 	for _, test := range tests {
@@ -219,21 +219,21 @@ func TestInt32Slice_Reverse(t *testing.T) {
 // Filter
 func TestInt32Slice_Filter(t *testing.T) {
 	tests := []struct {
-		name       string
-		slice      []int32
-		expected   []int32
+		name string
+		slice []int32
+		expected []int32
 		filterFunc func(int32) bool
 	}{
 		{
-			name:       "gt 10",
-			slice:      []int32{1, 2, 5, 11, 13, 15},
-			expected:   []int32{11, 13, 15},
+			name: "gt 10",
+			slice: []int32{1, 2, 5, 11, 13, 15},
+			expected: []int32{11, 13, 15},
 			filterFunc: func(n int32) bool { return n > 10 },
 		},
 		{
-			name:       "mod 3",
-			slice:      []int32{1, 2, 6, 11, 12, 15, 17},
-			expected:   []int32{6, 12, 15},
+			name: "mod 3",
+			slice: []int32{1, 2, 6, 11, 12, 15, 17},
+			expected: []int32{6, 12, 15},
 			filterFunc: func(n int32) bool { return n%3 == 0 },
 		},
 	}
@@ -252,20 +252,20 @@ func TestInt32Slice_Each(t *testing.T) {
 
 	var rabbit int32
 	tests := []struct {
-		name     string
-		slice    []int32
+		name string
+		slice []int32
 		expected int32
 		eachFunc func(int32)
 	}{
 		{
-			name:     "add n",
-			slice:    []int32{1, 2, 5, 11, 13, 15},
+			name: "add n",
+			slice: []int32{1, 2, 5, 11, 13, 15},
 			expected: 47,
 			eachFunc: func(n int32) { rabbit += n },
 		},
 		{
-			name:     "subtract n",
-			slice:    []int32{1, 2, 6, 8, 12},
+			name: "subtract n",
+			slice: []int32{1, 2, 6, 8, 12},
 			expected: 18,
 			eachFunc: func(n int32) { rabbit -= n },
 		},
@@ -284,22 +284,22 @@ func TestInt32Slice_Each(t *testing.T) {
 // Map
 func TestInt32Slice_Map(t *testing.T) {
 	tests := []struct {
-		name     string
-		slice    []int32
+		name string
+		slice []int32
 		expected []int32
-		mapFunc  func(int32) int32
+		mapFunc func(int32) int32
 	}{
 		{
-			name:     "add 3",
-			slice:    []int32{1, 2, 5, 11, 13, 15},
+			name: "add 3",
+			slice: []int32{1, 2, 5, 11, 13, 15},
 			expected: []int32{4, 5, 8, 14, 16, 18},
-			mapFunc:  func(n int32) int32 { return n + 3 },
+			mapFunc: func(n int32) int32 { return n + 3 },
 		},
 		{
-			name:     "set mod 2",
-			slice:    []int32{1, 2, 6, 8, 12, 15, 17},
+			name: "set mod 2",
+			slice: []int32{1, 2, 6, 8, 12, 15, 17},
 			expected: []int32{1, 0, 0, 0, 0, 1, 1},
-			mapFunc:  func(n int32) int32 { return int32(n % 2) },
+			mapFunc: func(n int32) int32 { return int32(n%2) },
 		},
 	}
 
@@ -319,27 +319,27 @@ func TestInt32Slice_Map(t *testing.T) {
 // IndexOf
 func BenchmarkInt32Slice_IndexOf(b *testing.B) {
 	benchmarks := []struct {
-		name  string
+		name string
 		slice []int32
 	}{
 		{
-			name:  "10 elements",
+			name: "10 elements",
 			slice: internal.GenInt32Slice(10),
 		},
 		{
-			name:  "100 elements",
+			name: "100 elements",
 			slice: internal.GenInt32Slice(100),
 		},
 		{
-			name:  "1000 elements",
+			name: "1000 elements",
 			slice: internal.GenInt32Slice(1000),
 		},
 		{
-			name:  "10000 elements",
+			name: "10000 elements",
 			slice: internal.GenInt32Slice(10000),
 		},
 		{
-			name:  "100000 elements",
+			name: "100000 elements",
 			slice: internal.GenInt32Slice(100000),
 		},
 	}
@@ -355,27 +355,27 @@ func BenchmarkInt32Slice_IndexOf(b *testing.B) {
 // Contains
 func BenchmarkInt32Slice_Contains(b *testing.B) {
 	benchmarks := []struct {
-		name  string
+		name string
 		slice []int32
 	}{
 		{
-			name:  "10 elements",
+			name: "10 elements",
 			slice: internal.GenInt32Slice(10),
 		},
 		{
-			name:  "100 elements",
+			name: "100 elements",
 			slice: internal.GenInt32Slice(100),
 		},
 		{
-			name:  "1000 elements",
+			name: "1000 elements",
 			slice: internal.GenInt32Slice(1000),
 		},
 		{
-			name:  "10000 elements",
+			name: "10000 elements",
 			slice: internal.GenInt32Slice(10000),
 		},
 		{
-			name:  "100000 elements",
+			name: "100000 elements",
 			slice: internal.GenInt32Slice(100000),
 		},
 	}
@@ -391,27 +391,27 @@ func BenchmarkInt32Slice_Contains(b *testing.B) {
 // SortAsc
 func BenchmarkInt32Slice_SortAsc(b *testing.B) {
 	benchmarks := []struct {
-		name  string
+		name string
 		slice []int32
 	}{
 		{
-			name:  "10 elements",
+			name: "10 elements",
 			slice: internal.GenInt32Slice(10),
 		},
 		{
-			name:  "100 elements",
+			name: "100 elements",
 			slice: internal.GenInt32Slice(100),
 		},
 		{
-			name:  "1000 elements",
+			name: "1000 elements",
 			slice: internal.GenInt32Slice(1000),
 		},
 		{
-			name:  "10000 elements",
+			name: "10000 elements",
 			slice: internal.GenInt32Slice(10000),
 		},
 		{
-			name:  "100000 elements",
+			name: "100000 elements",
 			slice: internal.GenInt32Slice(100000),
 		},
 	}
@@ -427,27 +427,27 @@ func BenchmarkInt32Slice_SortAsc(b *testing.B) {
 // SortDesc
 func BenchmarkInt32Slice_SortDesc(b *testing.B) {
 	benchmarks := []struct {
-		name  string
+		name string
 		slice []int32
 	}{
 		{
-			name:  "10 elements",
+			name: "10 elements",
 			slice: internal.GenInt32Slice(10),
 		},
 		{
-			name:  "100 elements",
+			name: "100 elements",
 			slice: internal.GenInt32Slice(100),
 		},
 		{
-			name:  "1000 elements",
+			name: "1000 elements",
 			slice: internal.GenInt32Slice(1000),
 		},
 		{
-			name:  "10000 elements",
+			name: "10000 elements",
 			slice: internal.GenInt32Slice(10000),
 		},
 		{
-			name:  "100000 elements",
+			name: "100000 elements",
 			slice: internal.GenInt32Slice(100000),
 		},
 	}
@@ -463,27 +463,27 @@ func BenchmarkInt32Slice_SortDesc(b *testing.B) {
 // Reverse
 func BenchmarkInt32Slice_Reverse(b *testing.B) {
 	benchmarks := []struct {
-		name  string
+		name string
 		slice []int32
 	}{
 		{
-			name:  "10 elements",
+			name: "10 elements",
 			slice: internal.GenInt32Slice(10),
 		},
 		{
-			name:  "100 elements",
+			name: "100 elements",
 			slice: internal.GenInt32Slice(100),
 		},
 		{
-			name:  "1000 elements",
+			name: "1000 elements",
 			slice: internal.GenInt32Slice(1000),
 		},
 		{
-			name:  "10000 elements",
+			name: "10000 elements",
 			slice: internal.GenInt32Slice(10000),
 		},
 		{
-			name:  "100000 elements",
+			name: "100000 elements",
 			slice: internal.GenInt32Slice(100000),
 		},
 	}
@@ -502,27 +502,27 @@ func BenchmarkInt32Slice_Filter(b *testing.B) {
 		return n%2 == 0
 	}
 	benchmarks := []struct {
-		name  string
+		name string
 		slice []int32
 	}{
 		{
-			name:  "10 elements",
+			name: "10 elements",
 			slice: internal.GenInt32Slice(10),
 		},
 		{
-			name:  "100 elements",
+			name: "100 elements",
 			slice: internal.GenInt32Slice(100),
 		},
 		{
-			name:  "1000 elements",
+			name: "1000 elements",
 			slice: internal.GenInt32Slice(1000),
 		},
 		{
-			name:  "10000 elements",
+			name: "10000 elements",
 			slice: internal.GenInt32Slice(10000),
 		},
 		{
-			name:  "100000 elements",
+			name: "100000 elements",
 			slice: internal.GenInt32Slice(100000),
 		},
 	}
@@ -542,27 +542,27 @@ func BenchmarkInt32Slice_Each(b *testing.B) {
 		rabbit = n
 	}
 	benchmarks := []struct {
-		name  string
+		name string
 		slice []int32
 	}{
 		{
-			name:  "10 elements",
+			name: "10 elements",
 			slice: internal.GenInt32Slice(10),
 		},
 		{
-			name:  "100 elements",
+			name: "100 elements",
 			slice: internal.GenInt32Slice(100),
 		},
 		{
-			name:  "1000 elements",
+			name: "1000 elements",
 			slice: internal.GenInt32Slice(1000),
 		},
 		{
-			name:  "10000 elements",
+			name: "10000 elements",
 			slice: internal.GenInt32Slice(10000),
 		},
 		{
-			name:  "100000 elements",
+			name: "100000 elements",
 			slice: internal.GenInt32Slice(100000),
 		},
 	}
@@ -584,27 +584,27 @@ func BenchmarkInt32Slice_Map(b *testing.B) {
 		return n
 	}
 	benchmarks := []struct {
-		name  string
+		name string
 		slice []int32
 	}{
 		{
-			name:  "10 elements",
+			name: "10 elements",
 			slice: internal.GenInt32Slice(10),
 		},
 		{
-			name:  "100 elements",
+			name: "100 elements",
 			slice: internal.GenInt32Slice(100),
 		},
 		{
-			name:  "1000 elements",
+			name: "1000 elements",
 			slice: internal.GenInt32Slice(1000),
 		},
 		{
-			name:  "10000 elements",
+			name: "10000 elements",
 			slice: internal.GenInt32Slice(10000),
 		},
 		{
-			name:  "100000 elements",
+			name: "100000 elements",
 			slice: internal.GenInt32Slice(100000),
 		},
 	}
@@ -616,5 +616,4 @@ func BenchmarkInt32Slice_Map(b *testing.B) {
 		})
 	}
 }
-
 // endregion
