@@ -5,8 +5,7 @@
 	.PackageType
 	-	the slice alias name (Int, Int16, etc)
 
-*/}}
-package slices
+*/}}package slices
 
 import (
 	"fmt"

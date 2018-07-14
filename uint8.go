@@ -1,4 +1,3 @@
-
 package slices
 
 import "sort"
