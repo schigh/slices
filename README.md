@@ -35,8 +35,9 @@ For the above types, the following operations are supported (_x_ is the type in 
 | SortDesc()             | Sort the slice in descending order                           |
 | Reverse()              | Reverses the slice                                           |
 | Filter(func(_x_) bool) | Applies a filter function to every item in the slice and return all items where the filter returns true |
-| ~~Copy()~~				 | ~~Returns a copy from the original backing array/slice.  This is useful if you no longer need to keep the original backing array hanging around in memory and no longer wish to reference it. For small backing arrays, this function doesn't really produce any benefit~~ (this is still WIP) |
-| Value()                | Returns the native type slice value                          |
+| Map(func(x) x)	| Iterate over the slice and replace the current value with the computed value |
+| Each(func(x))  | Iterate over the slice (non-mutating) |
+| Value() | Returns the native type slice value |
 
 #### Some examples...
 ```go
@@ -104,9 +105,9 @@ Some generated functions take as their receiver a function that operates on ever
 // instances where the eval function returns true
 func (slice UserSlice) Filter(f func(*User) bool) UserSlice {
 	out := make([]User, 0, len(slice))
-	for _, instance := range slice {
-		if f(&instance) {
-			out = append(out, instance)
+	for _, v := range slice {
+		if f(&v) {
+			out = append(out, v)
 		}
 	}
 
@@ -129,9 +130,9 @@ This would produce the following function:
 // instances where the eval function returns true
 func (slice UserSlice) Filter(f func(User) bool) UserSlice {
 	out := make([]User, 0, len(slice))
-	for _, instance := range slice {
-		if f(instance) {
-			out = append(out, instance)
+	for _, v := range slice {
+		if f(v) {
+			out = append(out, v)
 		}
 	}
 
@@ -139,5 +140,20 @@ func (slice UserSlice) Filter(f func(User) bool) UserSlice {
 }
 ```
 
-#### Copies
-WIP
+#### Pointer Slices
+You can also generate pointer slices by prepending an asterisk to your struct name in the `go generate` directive, like so:
+
+```
+//go:generate slices *User all
+```
+
+This will generate a type called `UserPtrSlice`, which is an alias of `[]*User`.  All slice functions take a pointer receiver, for example:
+
+```go
+func (slice UserPtrSlice) Map(f func(*User) *User) {
+	for i, v := range slice {
+		slice[i] = f(v)
+	}
+}
+```
+

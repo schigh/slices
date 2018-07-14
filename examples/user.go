@@ -1,6 +1,7 @@
 package examples
 
-//go:generate slices User filter(byvalue) map(byvalue)
+//go:generate slices *User all
+//go:generate slices User all
 //go:generate slices Account all(byvalue)
 
 // User is a user

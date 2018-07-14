@@ -3,39 +3,38 @@
 
 package examples
 
-// UserSlice aliases []User
-type UserSlice []User
+// UserPtrSlice aliases []*User
+type UserPtrSlice []*User
 
 // Value returns the wrapped User slice
-func (slice UserSlice) Value() []User {
-	return []User(slice)
+func (slice UserPtrSlice) Value() []*User {
+	return []*User(slice)
 }
 
 // Map applies a function to every User in the slice.  This function will mutate the slice in place
-func (slice UserSlice) Map(f func(*User) *User) {
+func (slice UserPtrSlice) Map(f func(*User) *User) {
 	for i, v := range slice {
-		v := f(&v)
-		slice[i] = *v
+		slice[i] = f(v)
 	}
 }
 
 // Filter evaluates every element in the slice, and returns all User 
 // instances where the eval function returns true
-func (slice UserSlice) Filter(f func(*User) bool) UserSlice {
-	out := make([]User, 0, len(slice))
+func (slice UserPtrSlice) Filter(f func(*User) bool) UserPtrSlice {
+	out := make([]*User, 0, len(slice))
 	for _, v := range slice {
-		if f(&v) {
+		if f(v) {
 			out = append(out, v)
 		}
 	}
 
-	return UserSlice(out)
+	return UserPtrSlice(out)
 }
 
 // Each applies a function to every User in the slice.
-func (slice UserSlice) Each(f func(*User)) {
+func (slice UserPtrSlice) Each(f func(*User)) {
 	for _, v := range slice {
-		f(&v)
+		f(v)
 	}
 }
 
