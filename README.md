@@ -31,6 +31,7 @@ For the above types, the following operations are supported (_x_ is the type in 
 | ---------------------- | ------------------------------------------------------------ |
 | IndexOf(_x_)           | Get the first index of the searched element in the slice.  If the element is not found, this function returns -1 |
 | Contains(_x_)          | Test to see if slice contains element _x_                    |
+| Unique()               | Returns unique items in slice.  The first occurence of an element is the one that is kept |
 | SortAsc()              | Sort the slice in ascending order                            |
 | SortDesc()             | Sort the slice in descending order                           |
 | Reverse()              | Reverses the slice                                           |
