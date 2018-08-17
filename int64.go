@@ -83,11 +83,25 @@ func (slice Int64Slice) Filter(f func(int64) bool) Int64Slice {
 }
 
 // Each will apply a function to each int64 in the slice.
-// This should be used with data outside of the slice as it doesn't mutate it
+// This function will iterate over the slice completely.  No
+// items in the slice should be mutated by this operation.
 func (slice Int64Slice) Each(f func(int64)) {
 	for _, v := range slice {
 		f(v)
 	}
+}
+
+// CheckEach will apply a function to each int64 in the slice.
+// If the function returns an error, the iteration will stop and return that error.
+// No items in the slice should be mutated by this operation.
+func (slice Int64Slice) CheckEach(f func(int64) error) error {
+	for _, v := range slice {
+		if err := f(v); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Map will apply a function to each int64 in the slice and replace the previous value

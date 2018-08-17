@@ -68,6 +68,32 @@ func (slice {{.SliceTypeName}}Slice) Each(f func({{if .ByRef}}*{{end}}{{.SourceS
 
 {{end}}`)
 
+const CheckEachTmpl = SliceTemplate(`// CheckEach applies a function to every {{.SourceStruct}} in the slice,
+// and returns an error.  The iteration will halt on the first error
+// encountered and return it.{{if .PO}}
+func (slice {{.SliceTypeName}}Slice) CheckEach(f func(*{{.SourceStruct}}) error) error {
+	for _, v := range slice {
+		if err := f(v); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+{{else}}
+func (slice {{.SliceTypeName}}Slice) CheckEach(f func({{if .ByRef}}*{{end}}{{.SourceStruct}}) error) error {
+	for _, v := range slice {
+		if err := f({{if .ByRef}}&{{end}}v); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+{{end}}`)
+
 // FilterTmpl is the filter function
 const FilterTmpl = SliceTemplate(`// Filter evaluates every element in the slice, and returns all {{.SourceStruct}} 
 // instances where the eval function returns true{{if .PO}}

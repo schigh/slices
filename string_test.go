@@ -1,6 +1,7 @@
 package slices
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"reflect"
@@ -286,6 +287,69 @@ func TestStringSlice_Each(t *testing.T) {
 			StringSlice(test.slice).Each(test.eachFunc)
 			if test.expected != rabbit {
 				t.Errorf("expected %s, got %s", test.expected, rabbit)
+			}
+		})
+	}
+}
+
+// CheckEach
+func TestStringSlice_CheckEach(t *testing.T) {
+
+	var rabbit string
+	myErr := errors.New("i am an error")
+	tests := []struct {
+		name     string
+		slice    []string
+		expected string
+		before   func()
+		err      error
+		eachFunc func(string) error
+	}{
+		{
+			name:     "concat",
+			slice:    []string{"abc", "def", "ghi", "jkl", "mno", "pqr"},
+			expected: "abcdefghijklmnopqr",
+			eachFunc: func(n string) error {
+				rabbit = fmt.Sprintf("%s%s", rabbit, n)
+				return nil
+			},
+		},
+		{
+			name:     "prepend",
+			slice:    []string{"aa", "bb", "cc", "dd", "ee"},
+			expected: "eeddccbbaaabcdefghijklmnopqr",
+			eachFunc: func(n string) error {
+				rabbit = fmt.Sprintf("%s%s", n, rabbit)
+				return nil
+			},
+		},
+		{
+			name:     "errors",
+			slice:    []string{"aa", "bb", "cc", "dd", "ee"},
+			expected: "ccbbaa",
+			err:      myErr,
+			before:   func() { rabbit = "" },
+			eachFunc: func(n string) error {
+				if len(rabbit) >= 6 {
+					return myErr
+				}
+				rabbit = fmt.Sprintf("%s%s", n, rabbit)
+				return nil
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if test.before != nil {
+				test.before()
+			}
+			checkErr := StringSlice(test.slice).CheckEach(test.eachFunc)
+			if test.expected != rabbit {
+				t.Errorf("expected %s, got %s", test.expected, rabbit)
+			}
+			if test.err != checkErr {
+				t.Errorf("expected %v, got %v", myErr, test.err)
 			}
 		})
 	}
