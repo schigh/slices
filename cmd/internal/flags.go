@@ -6,10 +6,11 @@ import (
 )
 
 const (
-	mapOperation    = "map"
-	eachOperation   = "each"
-	filterOperation = "filter"
-	allOperation    = "all"
+	mapOperation       = "map"
+	eachOperation      = "each"
+	checkEachOperation = "checkeach"
+	filterOperation    = "filter"
+	allOperation       = "all"
 )
 
 var re *regexp.Regexp
@@ -40,6 +41,9 @@ func OperationsFromFlags(flags string) ([]Operation, error) {
 		case eachOperation:
 			operation.Template = EachTmpl
 			operation.Name = "each"
+		case checkEachOperation:
+			operation.Template = CheckEachTmpl
+			operation.Name = "checkeach"
 		default:
 			return ops, fmt.Errorf("unknown operation: '%s'", op)
 		}
@@ -69,6 +73,12 @@ func allOps(br, cp bool) []Operation {
 			ByRef:    br,
 			Copy:     cp,
 			Name:     "each",
+		},
+		{
+			Template: CheckEachTmpl,
+			ByRef:    br,
+			Copy:     cp,
+			Name:     "checkeach",
 		},
 	}
 }

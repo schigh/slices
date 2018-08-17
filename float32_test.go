@@ -1,6 +1,7 @@
 package slices
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"reflect"
@@ -275,6 +276,71 @@ func TestFloat32Slice_Each(t *testing.T) {
 			Float32Slice(test.slice).Each(test.eachFunc)
 			if test.expected != rabbit {
 				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			}
+		})
+	}
+
+	fmt.Fprintf(ioutil.Discard, "%v", rabbit)
+}
+
+// CheckEach
+func TestFloat32Slice_CheckEach(t *testing.T) {
+
+	var rabbit float32
+	myErr := errors.New("i am an error")
+	tests := []struct {
+		name     string
+		slice    []float32
+		expected float32
+		before   func()
+		err      error
+		eachFunc func(float32) error
+	}{
+		{
+			name:     "add n",
+			slice:    []float32{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
+			expected: 49.5,
+			eachFunc: func(n float32) error {
+				rabbit += n
+				return nil
+			},
+		},
+		{
+			name:     "subtract n",
+			slice:    []float32{1.5, 2.25, 6.75, 8.5, 12.25},
+			expected: 18.25,
+			eachFunc: func(n float32) error {
+				rabbit -= n
+				return nil
+			},
+		},
+		{
+			name:     "errors",
+			slice:    []float32{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
+			expected: 9.5,
+			err:      myErr,
+			before:   func() { rabbit = 0 },
+			eachFunc: func(n float32) error {
+				if rabbit > 9 {
+					return myErr
+				}
+				rabbit += n
+				return nil
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if test.before != nil {
+				test.before()
+			}
+			checkErr := Float32Slice(test.slice).CheckEach(test.eachFunc)
+			if test.expected != rabbit {
+				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			}
+			if test.err != checkErr {
+				t.Errorf("expected %v, got %v", myErr, test.err)
 			}
 		})
 	}

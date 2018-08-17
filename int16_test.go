@@ -1,6 +1,7 @@
 package slices
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"reflect"
@@ -277,6 +278,69 @@ func TestInt16Slice_Each(t *testing.T) {
 			Int16Slice(test.slice).Each(test.eachFunc)
 			if test.expected != rabbit {
 				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			}
+		})
+	}
+}
+
+// CheckEach
+func TestInt16Slice_CheckEach(t *testing.T) {
+
+	var rabbit int16
+	myErr := errors.New("i am an error")
+	tests := []struct {
+		name     string
+		slice    []int16
+		expected int16
+		before   func()
+		err      error
+		eachFunc func(int16) error
+	}{
+		{
+			name:     "add n",
+			slice:    []int16{1, 2, 5, 11, 13, 15},
+			expected: 47,
+			eachFunc: func(n int16) error {
+				rabbit += n
+				return nil
+			},
+		},
+		{
+			name:     "subtract n",
+			slice:    []int16{1, 2, 6, 8, 12},
+			expected: 18,
+			eachFunc: func(n int16) error {
+				rabbit -= n
+				return nil
+			},
+		},
+		{
+			name:     "errors",
+			slice:    []int16{1, 2, 5, 11, 13, 15},
+			expected: 8,
+			err:      myErr,
+			before:   func() { rabbit = 0 },
+			eachFunc: func(n int16) error {
+				if n > 5 {
+					return myErr
+				}
+				rabbit += n
+				return nil
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if test.before != nil {
+				test.before()
+			}
+			checkErr := Int16Slice(test.slice).CheckEach(test.eachFunc)
+			if test.expected != rabbit {
+				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			}
+			if test.err != checkErr {
+				t.Errorf("expected %v, got %v", myErr, test.err)
 			}
 		})
 	}

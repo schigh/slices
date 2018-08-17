@@ -83,11 +83,25 @@ func (slice Int16Slice) Filter(f func(int16) bool) Int16Slice {
 }
 
 // Each will apply a function to each int16 in the slice.
-// This should be used with data outside of the slice as it doesn't mutate it
+// This function will iterate over the slice completely.  No
+// items in the slice should be mutated by this operation.
 func (slice Int16Slice) Each(f func(int16)) {
 	for _, v := range slice {
 		f(v)
 	}
+}
+
+// CheckEach will apply a function to each int16 in the slice.
+// If the function returns an error, the iteration will stop and return that error.
+// No items in the slice should be mutated by this operation.
+func (slice Int16Slice) CheckEach(f func(int16) error) error {
+	for _, v := range slice {
+		if err := f(v); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Map will apply a function to each int16 in the slice and replace the previous value

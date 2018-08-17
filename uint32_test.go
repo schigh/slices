@@ -1,6 +1,7 @@
 package slices
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"reflect"
@@ -277,6 +278,69 @@ func TestUInt32Slice_Each(t *testing.T) {
 			UInt32Slice(test.slice).Each(test.eachFunc)
 			if test.expected != rabbit {
 				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			}
+		})
+	}
+}
+
+// CheckEach
+func TestUInt32Slice_CheckEach(t *testing.T) {
+
+	var rabbit uint32
+	myErr := errors.New("i am an error")
+	tests := []struct {
+		name     string
+		slice    []uint32
+		expected uint32
+		before   func()
+		err      error
+		eachFunc func(uint32) error
+	}{
+		{
+			name:     "add n",
+			slice:    []uint32{1, 2, 5, 11, 13, 15},
+			expected: 47,
+			eachFunc: func(n uint32) error {
+				rabbit += n
+				return nil
+			},
+		},
+		{
+			name:     "subtract n",
+			slice:    []uint32{1, 2, 6, 8, 12},
+			expected: 18,
+			eachFunc: func(n uint32) error {
+				rabbit -= n
+				return nil
+			},
+		},
+		{
+			name:     "errors",
+			slice:    []uint32{1, 2, 5, 11, 13, 15},
+			expected: 8,
+			err:      myErr,
+			before:   func() { rabbit = 0 },
+			eachFunc: func(n uint32) error {
+				if n > 5 {
+					return myErr
+				}
+				rabbit += n
+				return nil
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if test.before != nil {
+				test.before()
+			}
+			checkErr := UInt32Slice(test.slice).CheckEach(test.eachFunc)
+			if test.expected != rabbit {
+				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			}
+			if test.err != checkErr {
+				t.Errorf("expected %v, got %v", myErr, test.err)
 			}
 		})
 	}

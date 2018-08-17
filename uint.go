@@ -83,11 +83,25 @@ func (slice UIntSlice) Filter(f func(uint) bool) UIntSlice {
 }
 
 // Each will apply a function to each uint in the slice.
-// This should be used with data outside of the slice as it doesn't mutate it
+// This function will iterate over the slice completely.  No
+// items in the slice should be mutated by this operation.
 func (slice UIntSlice) Each(f func(uint)) {
 	for _, v := range slice {
 		f(v)
 	}
+}
+
+// CheckEach will apply a function to each uint in the slice.
+// If the function returns an error, the iteration will stop and return that error.
+// No items in the slice should be mutated by this operation.
+func (slice UIntSlice) CheckEach(f func(uint) error) error {
+	for _, v := range slice {
+		if err := f(v); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Map will apply a function to each uint in the slice and replace the previous value

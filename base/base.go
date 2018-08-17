@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"text/template"
 )
 
@@ -68,13 +69,25 @@ func main() {
 			os.Exit(1)
 		}
 
-		if writeErr = ioutil.WriteFile(fmt.Sprintf("../%s.go", bucket.BaseType), baseBuff.Bytes(), 0644); writeErr != nil {
+		fileName := fmt.Sprintf("../%s.go", bucket.BaseType)
+		if writeErr = ioutil.WriteFile(fileName, baseBuff.Bytes(), 0644); writeErr != nil {
 			fmt.Fprintf(os.Stderr, "writing base file failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, writeErr)
 			os.Exit(1)
 		}
+		fileCmd := exec.Command("gofmt", "-s", "-w", fileName)
+		if err := fileCmd.Run(); err != nil {
+			fmt.Fprintf(os.Stderr, "gofmt failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, writeErr)
+			os.Exit(1)
+		}
 
-		if writeErr = ioutil.WriteFile(fmt.Sprintf("../%s_test.go", bucket.BaseType), testBuff.Bytes(), 0644); writeErr != nil {
+		testName := fmt.Sprintf("../%s_test.go", bucket.BaseType)
+		if writeErr = ioutil.WriteFile(testName, testBuff.Bytes(), 0644); writeErr != nil {
 			fmt.Fprintf(os.Stderr, "writing test file failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, writeErr)
+			os.Exit(1)
+		}
+		testCmd := exec.Command("gofmt", "-s", "-w", testName)
+		if err := testCmd.Run(); err != nil {
+			fmt.Fprintf(os.Stderr, "gofmt failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, writeErr)
 			os.Exit(1)
 		}
 	}
