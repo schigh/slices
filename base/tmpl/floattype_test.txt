@@ -290,23 +290,24 @@ func Test{{.PackageType}}_Each(t *testing.T) {
 	fmt.Fprintf(ioutil.Discard, "%v", rabbit)
 }
 
-// CheckEach
-func Test{{.PackageType}}_CheckEach(t *testing.T) {
+// TryEach
+func Test{{.PackageType}}_TryEach(t *testing.T) {
 
 	var rabbit {{.BaseType}}
 	myErr := errors.New("i am an error")
 	tests := []struct {
 		name string
 		slice []{{.BaseType}}
-		expected {{.BaseType}}
+		expected int
+		expected2 error
 		before func()
-		err error
 		eachFunc func({{.BaseType}}) error
 	}{
 		{
 			name: "add n",
 			slice: []{{.BaseType}}{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
-			expected: 49.5,
+			expected: NotInSlice,
+			expected2: nil,
 			eachFunc: func(n {{.BaseType}}) error {
 				rabbit += n
 				return nil
@@ -315,7 +316,8 @@ func Test{{.PackageType}}_CheckEach(t *testing.T) {
 		{
 			name: "subtract n",
 			slice: []{{.BaseType}}{1.5, 2.25, 6.75, 8.5, 12.25},
-			expected: 18.25,
+			expected: NotInSlice,
+			expected2: nil,
 			eachFunc: func(n {{.BaseType}}) error {
 				rabbit -= n
 				return nil
@@ -324,8 +326,8 @@ func Test{{.PackageType}}_CheckEach(t *testing.T) {
 		{
 			name: "errors",
 			slice: []{{.BaseType}}{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
-			expected: 9.5,
-			err: myErr,
+			expected: 3,
+			expected2: myErr,
 			before: func() { rabbit = {{.ZeroValue}} },
 			eachFunc: func(n {{.BaseType}}) error {
 				if rabbit > 9 {
@@ -342,17 +344,82 @@ func Test{{.PackageType}}_CheckEach(t *testing.T) {
 			if test.before != nil {
 				test.before()
 			}
-			checkErr := {{.PackageType}}(test.slice).CheckEach(test.eachFunc)
-			if test.expected != rabbit {
-				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			e, i := {{.PackageType}}(test.slice).TryEach(test.eachFunc)
+			if test.expected != e {
+				t.Errorf("expected %v, got %v", test.expected, e)
 			}
-			if test.err != checkErr {
-				t.Errorf("expected %v, got %v", myErr, test.err)
+			if test.expected2 != i {
+				t.Errorf("expected %v, got %v", test.expected2, i)
 			}
 		})
 	}
 
 	fmt.Fprintf(ioutil.Discard, "%v", rabbit)
+}
+
+// IfEach
+func Test{{.PackageType}}_IfEach(t *testing.T) {
+
+	var rabbit {{.BaseType}}
+	tests := []struct {
+		name string
+		slice []{{.BaseType}}
+		expected int
+		expected2 bool
+		before func()
+		err error
+		eachFunc func({{.BaseType}}) bool
+	}{
+		{
+			name: "all return true",
+			slice: []{{.BaseType}}{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
+			expected: NotInSlice,
+			expected2: true,
+			eachFunc: func(n {{.BaseType}}) bool {
+				rabbit += n
+				return true
+			},
+		},
+		{
+			name: "subtract n",
+			slice: []{{.BaseType}}{1.5, 2.25, 6.75, 8.5, 12.25},
+			expected: NotInSlice,
+			expected2: true,
+			eachFunc: func(n {{.BaseType}}) bool {
+				rabbit -= n
+				return true
+			},
+		},
+		{
+			name: "breaking",
+			slice: []{{.BaseType}}{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
+			expected: 3,
+			expected2: false,
+			before: func() { rabbit = {{.ZeroValue}} },
+			eachFunc: func(n {{.BaseType}}) bool {
+				if rabbit > 9 {
+					return false
+				}
+				rabbit += n
+				return true
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if test.before != nil {
+				test.before()
+			}
+			e, i := {{.PackageType}}(test.slice).IfEach(test.eachFunc)
+			if test.expected != e {
+				t.Errorf("expected %v, got %v", test.expected, e)
+			}
+			if test.expected2 != i {
+				t.Errorf("expected %v, got %v", test.expected2, i)
+			}
+		})
+	}
 }
 
 // Map

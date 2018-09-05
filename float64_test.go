@@ -283,43 +283,45 @@ func TestFloat64Slice_Each(t *testing.T) {
 	fmt.Fprintf(ioutil.Discard, "%v", rabbit)
 }
 
-// CheckEach
-func TestFloat64Slice_CheckEach(t *testing.T) {
+// TryEach
+func TestFloat64Slice_TryEach(t *testing.T) {
 
 	var rabbit float64
 	myErr := errors.New("i am an error")
 	tests := []struct {
-		name     string
-		slice    []float64
-		expected float64
-		before   func()
-		err      error
-		eachFunc func(float64) error
+		name      string
+		slice     []float64
+		expected  int
+		expected2 error
+		before    func()
+		eachFunc  func(float64) error
 	}{
 		{
-			name:     "add n",
-			slice:    []float64{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
-			expected: 49.5,
+			name:      "add n",
+			slice:     []float64{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
+			expected:  NotInSlice,
+			expected2: nil,
 			eachFunc: func(n float64) error {
 				rabbit += n
 				return nil
 			},
 		},
 		{
-			name:     "subtract n",
-			slice:    []float64{1.5, 2.25, 6.75, 8.5, 12.25},
-			expected: 18.25,
+			name:      "subtract n",
+			slice:     []float64{1.5, 2.25, 6.75, 8.5, 12.25},
+			expected:  NotInSlice,
+			expected2: nil,
 			eachFunc: func(n float64) error {
 				rabbit -= n
 				return nil
 			},
 		},
 		{
-			name:     "errors",
-			slice:    []float64{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
-			expected: 9.5,
-			err:      myErr,
-			before:   func() { rabbit = 0 },
+			name:      "errors",
+			slice:     []float64{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
+			expected:  3,
+			expected2: myErr,
+			before:    func() { rabbit = 0 },
 			eachFunc: func(n float64) error {
 				if rabbit > 9 {
 					return myErr
@@ -335,17 +337,82 @@ func TestFloat64Slice_CheckEach(t *testing.T) {
 			if test.before != nil {
 				test.before()
 			}
-			checkErr := Float64Slice(test.slice).CheckEach(test.eachFunc)
-			if test.expected != rabbit {
-				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			e, i := Float64Slice(test.slice).TryEach(test.eachFunc)
+			if test.expected != e {
+				t.Errorf("expected %v, got %v", test.expected, e)
 			}
-			if test.err != checkErr {
-				t.Errorf("expected %v, got %v", myErr, test.err)
+			if test.expected2 != i {
+				t.Errorf("expected %v, got %v", test.expected2, i)
 			}
 		})
 	}
 
 	fmt.Fprintf(ioutil.Discard, "%v", rabbit)
+}
+
+// IfEach
+func TestFloat64Slice_IfEach(t *testing.T) {
+
+	var rabbit float64
+	tests := []struct {
+		name      string
+		slice     []float64
+		expected  int
+		expected2 bool
+		before    func()
+		err       error
+		eachFunc  func(float64) bool
+	}{
+		{
+			name:      "all return true",
+			slice:     []float64{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
+			expected:  NotInSlice,
+			expected2: true,
+			eachFunc: func(n float64) bool {
+				rabbit += n
+				return true
+			},
+		},
+		{
+			name:      "subtract n",
+			slice:     []float64{1.5, 2.25, 6.75, 8.5, 12.25},
+			expected:  NotInSlice,
+			expected2: true,
+			eachFunc: func(n float64) bool {
+				rabbit -= n
+				return true
+			},
+		},
+		{
+			name:      "breaking",
+			slice:     []float64{1.25, 2.5, 5.75, 11.25, 13.5, 15.25},
+			expected:  3,
+			expected2: false,
+			before:    func() { rabbit = 0 },
+			eachFunc: func(n float64) bool {
+				if rabbit > 9 {
+					return false
+				}
+				rabbit += n
+				return true
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if test.before != nil {
+				test.before()
+			}
+			e, i := Float64Slice(test.slice).IfEach(test.eachFunc)
+			if test.expected != e {
+				t.Errorf("expected %v, got %v", test.expected, e)
+			}
+			if test.expected2 != i {
+				t.Errorf("expected %v, got %v", test.expected2, i)
+			}
+		})
+	}
 }
 
 // Map

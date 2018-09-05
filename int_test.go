@@ -283,43 +283,45 @@ func TestIntSlice_Each(t *testing.T) {
 	}
 }
 
-// CheckEach
-func TestIntSlice_CheckEach(t *testing.T) {
+// TryEach
+func TestIntSlice_TryEach(t *testing.T) {
 
 	var rabbit int
 	myErr := errors.New("i am an error")
 	tests := []struct {
-		name     string
-		slice    []int
-		expected int
-		before   func()
-		err      error
-		eachFunc func(int) error
+		name      string
+		slice     []int
+		expected  int
+		expected2 error
+		before    func()
+		eachFunc  func(int) error
 	}{
 		{
-			name:     "add n",
-			slice:    []int{1, 2, 5, 11, 13, 15},
-			expected: 47,
+			name:      "add n",
+			slice:     []int{1, 2, 5, 11, 13, 15},
+			expected:  NotInSlice,
+			expected2: nil,
 			eachFunc: func(n int) error {
 				rabbit += n
 				return nil
 			},
 		},
 		{
-			name:     "subtract n",
-			slice:    []int{1, 2, 6, 8, 12},
-			expected: 18,
+			name:      "subtract n",
+			slice:     []int{1, 2, 6, 8, 12},
+			expected:  NotInSlice,
+			expected2: nil,
 			eachFunc: func(n int) error {
 				rabbit -= n
 				return nil
 			},
 		},
 		{
-			name:     "errors",
-			slice:    []int{1, 2, 5, 11, 13, 15},
-			expected: 8,
-			err:      myErr,
-			before:   func() { rabbit = 0 },
+			name:      "errors",
+			slice:     []int{1, 2, 5, 11, 13, 15},
+			expected:  3,
+			expected2: myErr,
+			before:    func() { rabbit = 0 },
 			eachFunc: func(n int) error {
 				if n > 5 {
 					return myErr
@@ -335,12 +337,77 @@ func TestIntSlice_CheckEach(t *testing.T) {
 			if test.before != nil {
 				test.before()
 			}
-			checkErr := IntSlice(test.slice).CheckEach(test.eachFunc)
-			if test.expected != rabbit {
-				t.Errorf("expected %v, got %v", test.expected, rabbit)
+			e, i := IntSlice(test.slice).TryEach(test.eachFunc)
+			if test.expected != e {
+				t.Errorf("expected %v, got %v", test.expected, e)
 			}
-			if test.err != checkErr {
-				t.Errorf("expected %v, got %v", myErr, test.err)
+			if test.expected2 != i {
+				t.Errorf("expected %v, got %v", test.expected2, i)
+			}
+		})
+	}
+}
+
+// IfEach
+func TestIntSlice_IfEach(t *testing.T) {
+
+	var rabbit int
+	tests := []struct {
+		name      string
+		slice     []int
+		expected  int
+		expected2 bool
+		before    func()
+		err       error
+		eachFunc  func(int) bool
+	}{
+		{
+			name:      "all return true",
+			slice:     []int{1, 2, 5, 11, 13, 15},
+			expected:  NotInSlice,
+			expected2: true,
+			eachFunc: func(n int) bool {
+				rabbit += n
+				return true
+			},
+		},
+		{
+			name:      "subtract n",
+			slice:     []int{1, 2, 6, 8, 12},
+			expected:  NotInSlice,
+			expected2: true,
+			eachFunc: func(n int) bool {
+				rabbit -= n
+				return true
+			},
+		},
+		{
+			name:      "breaking",
+			slice:     []int{1, 2, 5, 11, 13, 15},
+			expected:  3,
+			expected2: false,
+			before:    func() { rabbit = 0 },
+			eachFunc: func(n int) bool {
+				if n > 5 {
+					return false
+				}
+				rabbit += n
+				return true
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if test.before != nil {
+				test.before()
+			}
+			e, i := IntSlice(test.slice).IfEach(test.eachFunc)
+			if test.expected != e {
+				t.Errorf("expected %v, got %v", test.expected, e)
+			}
+			if test.expected2 != i {
+				t.Errorf("expected %v, got %v", test.expected2, i)
 			}
 		})
 	}
