@@ -14,9 +14,9 @@ func (slice UIntPtrSlice) Value() []uintptr {
 
 // IndexOf returns the first index of needle, or -1 if not found
 func (slice UIntPtrSlice) IndexOf(needle uintptr) int {
-	for idx, n := range slice {
-		if needle == n {
-			return idx
+	for i := 0; i < len(slice); i++ {
+		if needle == slice[i] {
+			return i
 		}
 	}
 
@@ -60,10 +60,10 @@ func (slice UIntPtrSlice) Unique() UIntPtrSlice {
 	u := make([]uintptr, 0, len(slice))
 	m := make(map[uintptr]bool)
 
-	for _, v := range slice {
-		if _, ok := m[v]; !ok {
-			m[v] = true
-			u = append(u, v)
+	for i := 0; i < len(slice); i++ {
+		if _, ok := m[slice[i]]; !ok {
+			m[slice[i]] = true
+			u = append(u, slice[i])
 		}
 	}
 
@@ -73,9 +73,9 @@ func (slice UIntPtrSlice) Unique() UIntPtrSlice {
 // Filter will return all uintptr values that evaluate true in the user-supplied function
 func (slice UIntPtrSlice) Filter(f func(uintptr) bool) UIntPtrSlice {
 	out := make([]uintptr, 0, len(slice))
-	for _, v := range slice {
-		if f(v) {
-			out = append(out, v)
+	for i := 0; i < len(slice); i++ {
+		if f(slice[i]) {
+			out = append(out, slice[i])
 		}
 	}
 
@@ -86,8 +86,8 @@ func (slice UIntPtrSlice) Filter(f func(uintptr) bool) UIntPtrSlice {
 // This function will iterate over the slice completely.  No
 // items in the slice should be mutated by this operation.
 func (slice UIntPtrSlice) Each(f func(uintptr)) {
-	for _, v := range slice {
-		f(v)
+	for i := 0; i < len(slice); i++ {
+		f(slice[i])
 	}
 }
 
@@ -98,8 +98,8 @@ func (slice UIntPtrSlice) Each(f func(uintptr)) {
 // supplied function, and nil otherwise.
 // No items in the slice should be mutated by this operation.
 func (slice UIntPtrSlice) TryEach(f func(uintptr) error) (int, error) {
-	for i, v := range slice {
-		if err := f(v); err != nil {
+	for i := 0; i < len(slice); i++ {
+		if err := f(slice[i]); err != nil {
 			return i, err
 		}
 	}
@@ -114,8 +114,8 @@ func (slice UIntPtrSlice) TryEach(f func(uintptr) error) (int, error) {
 // cause the provided function to return true, and false otherwise.
 // No items in the slice should be mutated by this operation.
 func (slice UIntPtrSlice) IfEach(f func(uintptr) bool) (int, bool) {
-	for i, v := range slice {
-		if !f(v) {
+	for i := 0; i < len(slice); i++ {
+		if !f(slice[i]) {
 			return i, false
 		}
 	}
@@ -125,7 +125,7 @@ func (slice UIntPtrSlice) IfEach(f func(uintptr) bool) (int, bool) {
 
 // Map will apply a function to each uintptr in the slice and replace the previous value
 func (slice UIntPtrSlice) Map(f func(uintptr) uintptr) {
-	for i, v := range slice {
-		slice[i] = f(v)
+	for i := 0; i < len(slice); i++ {
+		slice[i] = f(slice[i])
 	}
 }

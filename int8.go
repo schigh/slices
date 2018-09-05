@@ -14,9 +14,9 @@ func (slice Int8Slice) Value() []int8 {
 
 // IndexOf returns the first index of needle, or -1 if not found
 func (slice Int8Slice) IndexOf(needle int8) int {
-	for idx, n := range slice {
-		if needle == n {
-			return idx
+	for i := 0; i < len(slice); i++ {
+		if needle == slice[i] {
+			return i
 		}
 	}
 
@@ -60,10 +60,10 @@ func (slice Int8Slice) Unique() Int8Slice {
 	u := make([]int8, 0, len(slice))
 	m := make(map[int8]bool)
 
-	for _, v := range slice {
-		if _, ok := m[v]; !ok {
-			m[v] = true
-			u = append(u, v)
+	for i := 0; i < len(slice); i++ {
+		if _, ok := m[slice[i]]; !ok {
+			m[slice[i]] = true
+			u = append(u, slice[i])
 		}
 	}
 
@@ -73,9 +73,9 @@ func (slice Int8Slice) Unique() Int8Slice {
 // Filter will return all int8 values that evaluate true in the user-supplied function
 func (slice Int8Slice) Filter(f func(int8) bool) Int8Slice {
 	out := make([]int8, 0, len(slice))
-	for _, v := range slice {
-		if f(v) {
-			out = append(out, v)
+	for i := 0; i < len(slice); i++ {
+		if f(slice[i]) {
+			out = append(out, slice[i])
 		}
 	}
 
@@ -86,8 +86,8 @@ func (slice Int8Slice) Filter(f func(int8) bool) Int8Slice {
 // This function will iterate over the slice completely.  No
 // items in the slice should be mutated by this operation.
 func (slice Int8Slice) Each(f func(int8)) {
-	for _, v := range slice {
-		f(v)
+	for i := 0; i < len(slice); i++ {
+		f(slice[i])
 	}
 }
 
@@ -98,8 +98,8 @@ func (slice Int8Slice) Each(f func(int8)) {
 // supplied function, and nil otherwise.
 // No items in the slice should be mutated by this operation.
 func (slice Int8Slice) TryEach(f func(int8) error) (int, error) {
-	for i, v := range slice {
-		if err := f(v); err != nil {
+	for i := 0; i < len(slice); i++ {
+		if err := f(slice[i]); err != nil {
 			return i, err
 		}
 	}
@@ -114,8 +114,8 @@ func (slice Int8Slice) TryEach(f func(int8) error) (int, error) {
 // cause the provided function to return true, and false otherwise.
 // No items in the slice should be mutated by this operation.
 func (slice Int8Slice) IfEach(f func(int8) bool) (int, bool) {
-	for i, v := range slice {
-		if !f(v) {
+	for i := 0; i < len(slice); i++ {
+		if !f(slice[i]) {
 			return i, false
 		}
 	}
@@ -125,7 +125,7 @@ func (slice Int8Slice) IfEach(f func(int8) bool) (int, bool) {
 
 // Map will apply a function to each int8 in the slice and replace the previous value
 func (slice Int8Slice) Map(f func(int8) int8) {
-	for i, v := range slice {
-		slice[i] = f(v)
+	for i := 0; i < len(slice); i++ {
+		slice[i] = f(slice[i])
 	}
 }
