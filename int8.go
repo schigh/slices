@@ -91,17 +91,36 @@ func (slice Int8Slice) Each(f func(int8)) {
 	}
 }
 
-// CheckEach will apply a function to each int8 in the slice.
-// If the function returns an error, the iteration will stop and return that error.
+// TryEach will apply a function to each int8 in the slice.
+// If the function returns an error, the iteration will stop and return
+// the index of the element that caused the function to return the error.
+// The second returned value will be first error returned from the
+// supplied function, and nil otherwise.
 // No items in the slice should be mutated by this operation.
-func (slice Int8Slice) CheckEach(f func(int8) error) error {
-	for _, v := range slice {
+func (slice Int8Slice) TryEach(f func(int8) error) (int, error) {
+	for i, v := range slice {
 		if err := f(v); err != nil {
-			return err
+			return i, err
 		}
 	}
 
-	return nil
+	return NotInSlice, nil
+}
+
+// IfEach will apply a function to each int8 in the slice.
+// If the function returns false, the iteration will stop and return
+// the index of the element that caused the function to return false.
+// The second returned value will be true if all members of the slice
+// cause the provided function to return true, and false otherwise.
+// No items in the slice should be mutated by this operation.
+func (slice Int8Slice) IfEach(f func(int8) bool) (int, bool) {
+	for i, v := range slice {
+		if !f(v) {
+			return i, false
+		}
+	}
+
+	return NotInSlice, true
 }
 
 // Map will apply a function to each int8 in the slice and replace the previous value
