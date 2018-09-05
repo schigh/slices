@@ -21,9 +21,9 @@ func (slice {{.PackageType}}) Value() []{{.BaseType}} {
 
 // IndexOf returns the first index of needle, or -1 if not found
 func (slice {{.PackageType}}) IndexOf(needle {{.BaseType}}) int {
-	for idx, n := range slice {
-		if needle == n {
-			return idx
+	for i := 0; i < len(slice); i++ {
+		if needle == slice[i] {
+			return i
 		}
 	}
 
@@ -67,10 +67,10 @@ func (slice {{.PackageType}}) Unique() {{.PackageType}} {
 	u := make([]{{.BaseType}}, 0, len(slice))
 	m := make(map[{{.BaseType}}]bool)
 
-	for _, v := range slice {
-		if _, ok := m[v]; !ok {
-			m[v] = true
-			u = append(u, v)
+	for i := 0; i < len(slice); i++ {
+		if _, ok := m[slice[i]]; !ok {
+			m[slice[i]] = true
+			u = append(u, slice[i])
 		}
 	}
 
@@ -80,9 +80,9 @@ func (slice {{.PackageType}}) Unique() {{.PackageType}} {
 // Filter will return all {{.BaseType}} values that evaluate true in the user-supplied function
 func (slice {{.PackageType}}) Filter(f func({{.BaseType}}) bool) {{.PackageType}} {
 	out := make([]{{.BaseType}}, 0, len(slice))
-	for _, v := range slice {
-		if f(v) {
-			out = append(out, v)
+	for i := 0; i < len(slice); i++ {
+		if f(slice[i]) {
+			out = append(out, slice[i])
 		}
 	}
 
