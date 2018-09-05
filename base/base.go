@@ -3,9 +3,9 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"go/format"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"text/template"
 )
 
@@ -55,8 +55,8 @@ func main() {
 		baseTmpl := template.Must(template.New("base").Parse(string(baseFileBytes)))
 		testTmpl := template.Must(template.New("test").Parse(string(testFileBytes)))
 
-		var execErr, writeErr error
-		var baseBytes, testBytes []byte
+		var execErr, writeErr, sourceErr error
+		var baseBytes, testBytes, baseSourceBytes, testSourceBytes []byte
 		baseBuff := bytes.NewBuffer(baseBytes)
 		testBuff := bytes.NewBuffer(testBytes)
 		if execErr = baseTmpl.Execute(baseBuff, bucket); execErr != nil {
@@ -69,25 +69,29 @@ func main() {
 			os.Exit(1)
 		}
 
+		baseSourceBytes, sourceErr = format.Source(baseBuff.Bytes())
+		if sourceErr != nil {
+			fmt.Fprintf(os.Stderr, "canonical source formatting failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, sourceErr)
+			os.Exit(1)
+		}
+		baseBuff = bytes.NewBuffer(baseSourceBytes)
+
+		testSourceBytes, sourceErr = format.Source(testBuff.Bytes())
+		if sourceErr != nil {
+			fmt.Fprintf(os.Stderr, "canonical source formatting failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, sourceErr)
+			os.Exit(1)
+		}
+		testBuff = bytes.NewBuffer(testSourceBytes)
+
 		fileName := fmt.Sprintf("../%s.go", bucket.BaseType)
 		if writeErr = ioutil.WriteFile(fileName, baseBuff.Bytes(), 0644); writeErr != nil {
 			fmt.Fprintf(os.Stderr, "writing base file failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, writeErr)
-			os.Exit(1)
-		}
-		fileCmd := exec.Command("gofmt", "-s", "-w", fileName)
-		if err := fileCmd.Run(); err != nil {
-			fmt.Fprintf(os.Stderr, "gofmt failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, writeErr)
 			os.Exit(1)
 		}
 
 		testName := fmt.Sprintf("../%s_test.go", bucket.BaseType)
 		if writeErr = ioutil.WriteFile(testName, testBuff.Bytes(), 0644); writeErr != nil {
 			fmt.Fprintf(os.Stderr, "writing test file failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, writeErr)
-			os.Exit(1)
-		}
-		testCmd := exec.Command("gofmt", "-s", "-w", testName)
-		if err := testCmd.Run(); err != nil {
-			fmt.Fprintf(os.Stderr, "gofmt failed for %s/%s: %v", bucket.BaseType, bucket.PackageType, writeErr)
 			os.Exit(1)
 		}
 	}

@@ -292,43 +292,45 @@ func TestStringSlice_Each(t *testing.T) {
 	}
 }
 
-// CheckEach
-func TestStringSlice_CheckEach(t *testing.T) {
+// TryEach
+func TestStringSlice_TryEach(t *testing.T) {
 
 	var rabbit string
 	myErr := errors.New("i am an error")
 	tests := []struct {
-		name     string
-		slice    []string
-		expected string
-		before   func()
-		err      error
-		eachFunc func(string) error
+		name      string
+		slice     []string
+		expected  int
+		expected2 error
+		before    func()
+		eachFunc  func(string) error
 	}{
 		{
-			name:     "concat",
-			slice:    []string{"abc", "def", "ghi", "jkl", "mno", "pqr"},
-			expected: "abcdefghijklmnopqr",
+			name:      "concat",
+			slice:     []string{"abc", "def", "ghi", "jkl", "mno", "pqr"},
+			expected:  NotInSlice,
+			expected2: nil,
 			eachFunc: func(n string) error {
 				rabbit = fmt.Sprintf("%s%s", rabbit, n)
 				return nil
 			},
 		},
 		{
-			name:     "prepend",
-			slice:    []string{"aa", "bb", "cc", "dd", "ee"},
-			expected: "eeddccbbaaabcdefghijklmnopqr",
+			name:      "prepend",
+			slice:     []string{"aa", "bb", "cc", "dd", "ee"},
+			expected:  NotInSlice,
+			expected2: nil,
 			eachFunc: func(n string) error {
 				rabbit = fmt.Sprintf("%s%s", n, rabbit)
 				return nil
 			},
 		},
 		{
-			name:     "errors",
-			slice:    []string{"aa", "bb", "cc", "dd", "ee"},
-			expected: "ccbbaa",
-			err:      myErr,
-			before:   func() { rabbit = "" },
+			name:      "errors",
+			slice:     []string{"aa", "bb", "cc", "dd", "ee"},
+			expected:  3,
+			expected2: myErr,
+			before:    func() { rabbit = "" },
 			eachFunc: func(n string) error {
 				if len(rabbit) >= 6 {
 					return myErr
@@ -344,12 +346,76 @@ func TestStringSlice_CheckEach(t *testing.T) {
 			if test.before != nil {
 				test.before()
 			}
-			checkErr := StringSlice(test.slice).CheckEach(test.eachFunc)
-			if test.expected != rabbit {
-				t.Errorf("expected %s, got %s", test.expected, rabbit)
+			e, i := StringSlice(test.slice).TryEach(test.eachFunc)
+			if test.expected != e {
+				t.Errorf("expected %v, got %v", test.expected, e)
 			}
-			if test.err != checkErr {
-				t.Errorf("expected %v, got %v", myErr, test.err)
+			if test.expected2 != i {
+				t.Errorf("expected %v, got %v", test.expected2, i)
+			}
+		})
+	}
+}
+
+// IfEach
+func TestStringSlice_IfEach(t *testing.T) {
+
+	var rabbit string
+	tests := []struct {
+		name      string
+		slice     []string
+		expected  int
+		expected2 bool
+		before    func()
+		eachFunc  func(string) bool
+	}{
+		{
+			name:      "all return true",
+			slice:     []string{"aa", "bb", "cc", "dd", "ee"},
+			expected:  NotInSlice,
+			expected2: true,
+			eachFunc: func(n string) bool {
+				rabbit = fmt.Sprintf("%s%s", rabbit, n)
+				return true
+			},
+		},
+		{
+			name:      "subtract n",
+			slice:     []string{"aa", "bb", "cc", "dd", "ee"},
+			expected:  NotInSlice,
+			expected2: true,
+			eachFunc: func(n string) bool {
+				rabbit = fmt.Sprintf("%s%s", n, rabbit)
+				return true
+			},
+		},
+		{
+			name:      "breaking",
+			slice:     []string{"aa", "bb", "cc", "dd", "ee"},
+			expected:  3,
+			expected2: false,
+			before:    func() { rabbit = "" },
+			eachFunc: func(n string) bool {
+				if len(rabbit) >= 6 {
+					return false
+				}
+				rabbit = fmt.Sprintf("%s%s", n, rabbit)
+				return true
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if test.before != nil {
+				test.before()
+			}
+			e, i := StringSlice(test.slice).IfEach(test.eachFunc)
+			if test.expected != e {
+				t.Errorf("expected %v, got %v", test.expected, e)
+			}
+			if test.expected2 != i {
+				t.Errorf("expected %v, got %v", test.expected2, i)
 			}
 		})
 	}
