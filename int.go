@@ -129,3 +129,25 @@ func (slice IntSlice) Map(f func(int) int) {
 		slice[i] = f(slice[i])
 	}
 }
+
+// Chunk will divide the slice of int into smaller slices defined by chunk length
+func (slice IntSlice) Chunk(size int) [][]int {
+	l := len(slice)
+	if l == 0 || size <= 0 {
+		return make([][]int, 0)
+	}
+
+	floor := l / size
+	out := make([][]int, 0, floor+1)
+	var k int
+
+	for i := 0; i < floor; i++ {
+		k = i*size + size
+		out = append(out, slice[i*size:k])
+	}
+	if l > k {
+		out = append(out, slice[k:])
+	}
+
+	return out
+}

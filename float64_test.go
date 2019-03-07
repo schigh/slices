@@ -447,4 +447,66 @@ func TestFloat64Slice_Map(t *testing.T) {
 	}
 }
 
+// Chunk
+func TestFloat64Slice_Chunk(t *testing.T) {
+	tests := []struct {
+		name     string
+		size     int
+		slice    []float64
+		expected [][]float64
+	}{
+		{
+			name:     "chunks of 2 no remainder",
+			size:     2,
+			slice:    []float64{1.1, 2.2, 5.5, 11.11, 13.13, 15.15},
+			expected: [][]float64{[]float64{1.1, 2.2}, []float64{5.5, 11.11}, []float64{13.13, 15.15}},
+		},
+		{
+			name:     "chunks of 2 with remainder",
+			size:     2,
+			slice:    []float64{1.1, 2.2, 5.5, 11.11, 13.13, 15.15, 17.17},
+			expected: [][]float64{[]float64{1.1, 2.2}, []float64{5.5, 11.11}, []float64{13.13, 15.15}, []float64{17.17}},
+		},
+		{
+			name:     "chunks of 100",
+			size:     100,
+			slice:    []float64{1.1, 2.2, 5.5, 11.11, 13.13, 15.15, 17.17},
+			expected: [][]float64{[]float64{1.1, 2.2, 5.5, 11.11, 13.13, 15.15, 17.17}},
+		},
+		{
+			name:     "chunks of 4",
+			size:     4,
+			slice:    []float64{1.1, 2.2, 5.5, 11.11, 13.13, 15.15, 17.17},
+			expected: [][]float64{[]float64{1.1, 2.2, 5.5, 11.11}, []float64{13.13, 15.15, 17.17}},
+		},
+		{
+			name:     "chunks of 5",
+			size:     5,
+			slice:    []float64{1.1, 2.2, 5.5, 11.11, 13.13, 15.15, 17.17},
+			expected: [][]float64{[]float64{1.1, 2.2, 5.5, 11.11, 13.13}, []float64{15.15, 17.17}},
+		},
+		{
+			name:     "empty slice",
+			size:     5,
+			slice:    []float64{},
+			expected: [][]float64{},
+		},
+		{
+			name:     "invalid chunk size",
+			size:     -1,
+			slice:    []float64{1.1, 2.2, 5.5, 11.11, 13.13, 15.15, 17.17},
+			expected: [][]float64{},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			out := Float64Slice(test.slice).Chunk(test.size)
+			if !reflect.DeepEqual(test.expected, out) {
+				t.Errorf("expected %v, got %v", test.expected, test.slice)
+			}
+		})
+	}
+}
+
 //endregion

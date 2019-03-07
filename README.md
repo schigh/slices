@@ -40,6 +40,7 @@ For the above types, the following operations are supported (_x_ is the type in 
 | Each(func(x))  | Iterate over the slice (non-mutating) |
 | TryEach(func(_x_) error) (int, error) | Iterate over the slice, and halt if an error is returned from user func.  Return index of the failed member and the caught error |
 | IfEach(func(_x_) bool) (int, bool) | Iterate over the slice, and halt if false is returned from user func.  Return the index of the element that caused the func to return false, and a bool that is true if every member of the slice returned true with the function applied.  If all elements return true, the index returned is `-1` |
+| Chunk(size) | Splits the slice into chunks of a specified size |
 | Value() | Returns the native type slice value |
 
 #### Some examples...

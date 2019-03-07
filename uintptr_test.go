@@ -445,6 +445,68 @@ func TestUIntPtrSlice_Map(t *testing.T) {
 	}
 }
 
+// Chunk
+func TestUIntPtrSlice_Chunk(t *testing.T) {
+	tests := []struct {
+		name     string
+		size     int
+		slice    []uintptr
+		expected [][]uintptr
+	}{
+		{
+			name:     "chunks of 2 no remainder",
+			size:     2,
+			slice:    []uintptr{1, 2, 5, 11, 13, 15},
+			expected: [][]uintptr{[]uintptr{1, 2}, []uintptr{5, 11}, []uintptr{13, 15}},
+		},
+		{
+			name:     "chunks of 2 with remainder",
+			size:     2,
+			slice:    []uintptr{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uintptr{[]uintptr{1, 2}, []uintptr{5, 11}, []uintptr{13, 15}, []uintptr{17}},
+		},
+		{
+			name:     "chunks of 100",
+			size:     100,
+			slice:    []uintptr{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uintptr{[]uintptr{1, 2, 5, 11, 13, 15, 17}},
+		},
+		{
+			name:     "chunks of 4",
+			size:     4,
+			slice:    []uintptr{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uintptr{[]uintptr{1, 2, 5, 11}, []uintptr{13, 15, 17}},
+		},
+		{
+			name:     "chunks of 5",
+			size:     5,
+			slice:    []uintptr{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uintptr{[]uintptr{1, 2, 5, 11, 13}, []uintptr{15, 17}},
+		},
+		{
+			name:     "empty slice",
+			size:     5,
+			slice:    []uintptr{},
+			expected: [][]uintptr{},
+		},
+		{
+			name:     "invalid chunk size",
+			size:     -1,
+			slice:    []uintptr{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uintptr{},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			out := UIntPtrSlice(test.slice).Chunk(test.size)
+			if !reflect.DeepEqual(test.expected, out) {
+				t.Errorf("expected %v, got %v", test.expected, test.slice)
+			}
+		})
+	}
+}
+
 // endregion
 
 // region BENCHMARKS

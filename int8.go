@@ -129,3 +129,25 @@ func (slice Int8Slice) Map(f func(int8) int8) {
 		slice[i] = f(slice[i])
 	}
 }
+
+// Chunk will divide the slice of int8 into smaller slices defined by chunk length
+func (slice Int8Slice) Chunk(size int) [][]int8 {
+	l := len(slice)
+	if l == 0 || size <= 0 {
+		return make([][]int8, 0)
+	}
+
+	floor := l / size
+	out := make([][]int8, 0, floor+1)
+	var k int
+
+	for i := 0; i < floor; i++ {
+		k = i*size + size
+		out = append(out, slice[i*size:k])
+	}
+	if l > k {
+		out = append(out, slice[k:])
+	}
+
+	return out
+}

@@ -445,6 +445,68 @@ func TestUInt64Slice_Map(t *testing.T) {
 	}
 }
 
+// Chunk
+func TestUInt64Slice_Chunk(t *testing.T) {
+	tests := []struct {
+		name     string
+		size     int
+		slice    []uint64
+		expected [][]uint64
+	}{
+		{
+			name:     "chunks of 2 no remainder",
+			size:     2,
+			slice:    []uint64{1, 2, 5, 11, 13, 15},
+			expected: [][]uint64{[]uint64{1, 2}, []uint64{5, 11}, []uint64{13, 15}},
+		},
+		{
+			name:     "chunks of 2 with remainder",
+			size:     2,
+			slice:    []uint64{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uint64{[]uint64{1, 2}, []uint64{5, 11}, []uint64{13, 15}, []uint64{17}},
+		},
+		{
+			name:     "chunks of 100",
+			size:     100,
+			slice:    []uint64{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uint64{[]uint64{1, 2, 5, 11, 13, 15, 17}},
+		},
+		{
+			name:     "chunks of 4",
+			size:     4,
+			slice:    []uint64{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uint64{[]uint64{1, 2, 5, 11}, []uint64{13, 15, 17}},
+		},
+		{
+			name:     "chunks of 5",
+			size:     5,
+			slice:    []uint64{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uint64{[]uint64{1, 2, 5, 11, 13}, []uint64{15, 17}},
+		},
+		{
+			name:     "empty slice",
+			size:     5,
+			slice:    []uint64{},
+			expected: [][]uint64{},
+		},
+		{
+			name:     "invalid chunk size",
+			size:     -1,
+			slice:    []uint64{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]uint64{},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			out := UInt64Slice(test.slice).Chunk(test.size)
+			if !reflect.DeepEqual(test.expected, out) {
+				t.Errorf("expected %v, got %v", test.expected, test.slice)
+			}
+		})
+	}
+}
+
 // endregion
 
 // region BENCHMARKS

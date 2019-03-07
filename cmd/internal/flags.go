@@ -18,7 +18,7 @@ var re *regexp.Regexp
 
 func init() {
 	// https://regex101.com/r/ydgkha/1
-	re = regexp.MustCompile(`(?m)(map|each|filter|all)(\(((?P<bv>byvalue)|(?P<cp>copy)|,)+\))?`)
+	re = regexp.MustCompile(`(?m)(map|ifeach|tryeach|each|filter|all)(\(((?P<bv>byvalue)|(?P<cp>copy)|,)+\))?`)
 }
 
 // OperationsFromFlags returns all operations in the flag

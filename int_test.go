@@ -445,6 +445,68 @@ func TestIntSlice_Map(t *testing.T) {
 	}
 }
 
+// Chunk
+func TestIntSlice_Chunk(t *testing.T) {
+	tests := []struct {
+		name     string
+		size     int
+		slice    []int
+		expected [][]int
+	}{
+		{
+			name:     "chunks of 2 no remainder",
+			size:     2,
+			slice:    []int{1, 2, 5, 11, 13, 15},
+			expected: [][]int{[]int{1, 2}, []int{5, 11}, []int{13, 15}},
+		},
+		{
+			name:     "chunks of 2 with remainder",
+			size:     2,
+			slice:    []int{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]int{[]int{1, 2}, []int{5, 11}, []int{13, 15}, []int{17}},
+		},
+		{
+			name:     "chunks of 100",
+			size:     100,
+			slice:    []int{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]int{[]int{1, 2, 5, 11, 13, 15, 17}},
+		},
+		{
+			name:     "chunks of 4",
+			size:     4,
+			slice:    []int{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]int{[]int{1, 2, 5, 11}, []int{13, 15, 17}},
+		},
+		{
+			name:     "chunks of 5",
+			size:     5,
+			slice:    []int{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]int{[]int{1, 2, 5, 11, 13}, []int{15, 17}},
+		},
+		{
+			name:     "empty slice",
+			size:     5,
+			slice:    []int{},
+			expected: [][]int{},
+		},
+		{
+			name:     "invalid chunk size",
+			size:     -1,
+			slice:    []int{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]int{},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			out := IntSlice(test.slice).Chunk(test.size)
+			if !reflect.DeepEqual(test.expected, out) {
+				t.Errorf("expected %v, got %v", test.expected, test.slice)
+			}
+		})
+	}
+}
+
 // endregion
 
 // region BENCHMARKS

@@ -129,3 +129,25 @@ func (slice Int64Slice) Map(f func(int64) int64) {
 		slice[i] = f(slice[i])
 	}
 }
+
+// Chunk will divide the slice of int64 into smaller slices defined by chunk length
+func (slice Int64Slice) Chunk(size int) [][]int64 {
+	l := len(slice)
+	if l == 0 || size <= 0 {
+		return make([][]int64, 0)
+	}
+
+	floor := l / size
+	out := make([][]int64, 0, floor+1)
+	var k int
+
+	for i := 0; i < floor; i++ {
+		k = i*size + size
+		out = append(out, slice[i*size:k])
+	}
+	if l > k {
+		out = append(out, slice[k:])
+	}
+
+	return out
+}

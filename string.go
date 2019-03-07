@@ -129,3 +129,25 @@ func (slice StringSlice) Map(f func(string) string) {
 		slice[i] = f(slice[i])
 	}
 }
+
+// Chunk will divide the slice of string into smaller slices defined by chunk length
+func (slice StringSlice) Chunk(size int) [][]string {
+	l := len(slice)
+	if l == 0 || size <= 0 {
+		return make([][]string, 0)
+	}
+
+	floor := l / size
+	out := make([][]string, 0, floor+1)
+	var k int
+
+	for i := 0; i < floor; i++ {
+		k = i*size + size
+		out = append(out, slice[i*size:k])
+	}
+	if l > k {
+		out = append(out, slice[k:])
+	}
+
+	return out
+}

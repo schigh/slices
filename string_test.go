@@ -471,6 +471,68 @@ func TestStringSlice_Map(t *testing.T) {
 	}
 }
 
+// Chunk
+func TestStringSlice_Chunk(t *testing.T) {
+	tests := []struct {
+		name     string
+		size     int
+		slice    []string
+		expected [][]string
+	}{
+		{
+			name:     "chunks of 2 no remainder",
+			size:     2,
+			slice:    []string{"foo", "bar", "baz", "fizz", "buzz", "beez"},
+			expected: [][]string{[]string{"foo", "bar"}, []string{"baz", "fizz"}, []string{"buzz", "beez"}},
+		},
+		{
+			name:     "chunks of 2 with remainder",
+			size:     2,
+			slice:    []string{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]string{[]string{"foo", "bar"}, []string{"baz", "fizz"}, []string{"buzz", "beez"}, []string{"booz"}},
+		},
+		{
+			name:     "chunks of 100",
+			size:     100,
+			slice:    []string{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]string{[]string{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"}},
+		},
+		{
+			name:     "chunks of 4",
+			size:     4,
+			slice:    []string{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]string{[]string{"foo", "bar", "baz", "fizz"}, []string{"buzz", "beez", "booz"}},
+		},
+		{
+			name:     "chunks of 5",
+			size:     5,
+			slice:    []string{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]string{[]string{"foo", "bar", "baz", "fizz", "buzz"}, []string{"beez", "booz"}},
+		},
+		{
+			name:     "empty slice",
+			size:     5,
+			slice:    []string{},
+			expected: [][]string{},
+		},
+		{
+			name:     "invalid chunk size",
+			size:     -1,
+			slice:    []string{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]string{},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			out := StringSlice(test.slice).Chunk(test.size)
+			if !reflect.DeepEqual(test.expected, out) {
+				t.Errorf("expected %v, got %v", test.expected, test.slice)
+			}
+		})
+	}
+}
+
 // endregion
 
 // region BENCHMARKS

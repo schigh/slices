@@ -452,6 +452,68 @@ func Test{{.PackageType}}_Map(t *testing.T) {
 	}
 }
 
+// Chunk
+func Test{{.PackageType}}_Chunk(t *testing.T) {
+	tests := []struct {
+		name string
+		size int
+		slice []{{.BaseType}}
+		expected [][]{{.BaseType}}
+	}{
+		{
+			name: "chunks of 2 no remainder",
+			size: 2,
+			slice: []{{.BaseType}}{1, 2, 5, 11, 13, 15},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{1, 2}, []{{.BaseType}}{5, 11}, []{{.BaseType}}{13, 15}},
+		},
+		{
+			name: "chunks of 2 with remainder",
+			size: 2,
+			slice: []{{.BaseType}}{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{1, 2}, []{{.BaseType}}{5, 11}, []{{.BaseType}}{13, 15}, []{{.BaseType}}{17}},
+		},
+		{
+			name: "chunks of 100",
+			size: 100,
+			slice: []{{.BaseType}}{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{1, 2, 5, 11, 13, 15, 17}},
+		},
+		{
+			name: "chunks of 4",
+			size: 4,
+			slice: []{{.BaseType}}{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{1, 2, 5, 11}, []{{.BaseType}}{13, 15, 17}},
+		},
+		{
+			name: "chunks of 5",
+			size: 5,
+			slice: []{{.BaseType}}{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{1, 2, 5, 11, 13}, []{{.BaseType}}{15, 17}},
+		},
+		{
+			name: "empty slice",
+			size: 5,
+			slice: []{{.BaseType}}{},
+			expected: [][]{{.BaseType}}{},
+		},
+		{
+			name: "invalid chunk size",
+			size: -1,
+			slice: []{{.BaseType}}{1, 2, 5, 11, 13, 15, 17},
+			expected: [][]{{.BaseType}}{},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			out := {{.PackageType}}(test.slice).Chunk(test.size)
+			if !reflect.DeepEqual(test.expected, out) {
+				t.Errorf("expected %v, got %v", test.expected, test.slice)
+			}
+		})
+	}
+}
+
 // endregion
 
 // region BENCHMARKS

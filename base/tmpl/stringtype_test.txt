@@ -478,6 +478,68 @@ func Test{{.PackageType}}_Map(t *testing.T) {
 	}
 }
 
+// Chunk
+func Test{{.PackageType}}_Chunk(t *testing.T) {
+	tests := []struct {
+		name string
+		size int
+		slice []{{.BaseType}}
+		expected [][]{{.BaseType}}
+	}{
+		{
+			name: "chunks of 2 no remainder",
+			size: 2,
+			slice: []{{.BaseType}}{"foo", "bar", "baz", "fizz", "buzz", "beez"},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{"foo", "bar"}, []{{.BaseType}}{"baz", "fizz"}, []{{.BaseType}}{"buzz", "beez"}},
+		},
+		{
+			name: "chunks of 2 with remainder",
+			size: 2,
+			slice: []{{.BaseType}}{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{"foo", "bar"}, []{{.BaseType}}{"baz", "fizz"}, []{{.BaseType}}{"buzz", "beez"}, []{{.BaseType}}{"booz"}},
+		},
+		{
+			name: "chunks of 100",
+			size: 100,
+			slice: []{{.BaseType}}{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"}},
+		},
+		{
+			name: "chunks of 4",
+			size: 4,
+			slice: []{{.BaseType}}{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{"foo", "bar", "baz", "fizz"}, []{{.BaseType}}{"buzz", "beez", "booz"}},
+		},
+		{
+			name: "chunks of 5",
+			size: 5,
+			slice: []{{.BaseType}}{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]{{.BaseType}}{[]{{.BaseType}}{"foo", "bar", "baz", "fizz", "buzz"}, []{{.BaseType}}{"beez", "booz"}},
+		},
+		{
+			name: "empty slice",
+			size: 5,
+			slice: []{{.BaseType}}{},
+			expected: [][]{{.BaseType}}{},
+		},
+		{
+			name: "invalid chunk size",
+			size: -1,
+			slice: []{{.BaseType}}{"foo", "bar", "baz", "fizz", "buzz", "beez", "booz"},
+			expected: [][]{{.BaseType}}{},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			out := {{.PackageType}}(test.slice).Chunk(test.size)
+			if !reflect.DeepEqual(test.expected, out) {
+				t.Errorf("expected %v, got %v", test.expected, test.slice)
+			}
+		})
+	}
+}
+
 
 // endregion
 

@@ -136,3 +136,25 @@ func (slice {{.PackageType}}) Map(f func({{.BaseType}}) {{.BaseType}}) {
 		slice[i] = f(slice[i])
 	}
 }
+
+// Chunk will divide the slice of {{.BaseType}} into smaller slices defined by chunk length
+func (slice {{.PackageType}}) Chunk(size int) [][]{{.BaseType}} {
+	l := len(slice)
+	if l == 0 || size <= 0 {
+		return make([][]{{.BaseType}}, 0)
+	}
+
+	floor := l / size
+	out := make([][]{{.BaseType}}, 0, floor+1)
+	var k int
+
+	for i := 0; i < floor; i++ {
+		k = i*size + size
+		out = append(out, slice[i*size:k])
+	}
+	if l > k {
+		out = append(out, slice[k:])
+	}
+
+	return out
+}
