@@ -68,6 +68,7 @@ func (slice {{.SliceTypeName}}Slice) Each(f func({{if .ByRef}}*{{end}}{{.SourceS
 
 {{end}}`)
 
+// TryEachTmpl is the TryEach function
 const TryEachTmpl = SliceTemplate(`// TryEach applies a function to every {{.SourceStruct}} in the slice,
 // and returns the index of the element that caused the first error, and the error itself.  
 // If every member of the slice returns nil, this function will return (-1, nil)
@@ -95,6 +96,7 @@ func (slice {{.SliceTypeName}}Slice) TryEach(f func({{if .ByRef}}*{{end}}{{.Sour
 
 {{end}}`)
 
+// IfEachTmpl is the IfEach function
 const IfEachTmpl = SliceTemplate(`// IfEach applies a function to every {{.SourceStruct}} in the slice,
 // and returns the index of the element that caused the function to return false.  
 // If every member of the slice evaluates to true, this function will return (-1, true)
