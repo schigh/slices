@@ -4,6 +4,8 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/schigh/slices)](https://goreportcard.com/report/github.com/schigh/slices)
 [![Godocs](https://img.shields.io/badge/golang-documentation-blue.svg)](https://godoc.org/github.com/schigh/slices)
 
+> Some great and powerful gopher once said you shouldn't put this kind of stuff in a library because it's so simple.  Until you have to write a contains method for the thousandth time.
+
 ![slices](slices_small.png)
 
 Slices bolts on some generics-ish functionality to native Go data types when represented as a slice.  Currently, the following types are supported:
