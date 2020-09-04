@@ -1,3 +1,10 @@
+# This repo is archived
+
+I've moved development of this repo to github.com/schigh/slice.
+I'm going to use that repo to integrate slice functions using the current generics draft.
+
+---
+
 [![LICENSE](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/schigh/slices.svg?branch=master)](https://travis-ci.org/schigh/slices)
 [![codecov](https://codecov.io/gh/schigh/slices/branch/master/graph/badge.svg?token=hhqA1l88kx)](https://codecov.io/gh/schigh/slices)
